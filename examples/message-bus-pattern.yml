@@ -1,0 +1,58 @@
+title: message bus pattern 
+backgroundColor: '#ffffff'
+components:
+  - 
+    kind: service
+    label: Producer
+    provider: AWS EC2
+  -
+    kind: broker
+    label: "Notification\nService"
+    provider: AWS SNS
+  -
+    kind: queue
+    label: "event queue @ topic 1"
+    provider: AWS SQS
+  -
+    kind: queue
+    label: "event queue @ topic 2"
+    provider: AWS SQS
+  -
+    kind: service
+    label: "Consumer\n@ topic 1"
+    provider: AWS EC2
+  -
+    kind: service
+    label: "Consumer\n@ topic 2"
+    provider: AWS EC2
+connections:
+  -
+    origin: 
+      componentId: ms1
+    targets:
+      -
+        componentId: br1
+  -
+    origin:
+      componentId: br1
+    targets:
+      -
+        componentId: qs1
+        dashed: true
+      -
+        componentId: qs2
+        dashed: true
+  -
+    origin:
+      componentId: qs1
+    targets:
+      -
+        componentId: ms2
+        dir: back
+  -
+    origin: 
+      componentId: qs2
+    targets:
+      -
+        componentId: ms3
+        dir: back

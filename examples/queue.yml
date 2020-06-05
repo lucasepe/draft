@@ -1,0 +1,5 @@
+--- 
+components: 
+  - 
+    kind: queue
+    label: "event queue"

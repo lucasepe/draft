@@ -1,0 +1,6 @@
+--- 
+components: 
+  - 
+    kind: function
+    label: "Create\nAuth Challange"
+    provider: AWS Lambda

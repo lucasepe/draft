@@ -1,0 +1,6 @@
+--- 
+components: 
+  - 
+    kind: client
+    label: "Web App"
+    provider: SPA

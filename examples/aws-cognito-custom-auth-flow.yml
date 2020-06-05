@@ -1,0 +1,62 @@
+title: Amazon Cognito Custom Authentication Flow with external database
+backgroundColor: '#ffffff'
+components:
+  -
+    kind: client
+    label: "Web App"
+    provider: SPA
+  -
+    kind: client
+    label: "Mobile App"
+    provider: "Android & iOS"
+  -
+    kind: service
+    label: "Cognito"
+    provider: "AWS Cognito"
+    fillColor: '#991919'
+    fontColor: '#fafafa'
+  -
+    kind: function
+    label: "Define\nAuthChallange"
+    provider: "AWS Lambda"
+  -
+    kind: function
+    label: "Create\nAuthChallange"
+    provider: "AWS Lambda"
+  -
+    kind: function
+    label: "Verify\nAuthChallange"
+    provider: "AWS Lambda"
+  -
+    kind: database
+    label: "Users\nRepository"
+    provider: "AWS RDS"
+connections:
+  -
+    origin:
+      componentId: cl1
+    targets:
+      -
+        componentId: ms1
+  -
+    origin:
+      componentId: cl2
+    targets:
+      -
+        componentId: ms1
+  -
+    origin:
+      componentId: ms1
+    targets:
+      -
+        componentId: fn1
+      -
+        componentId: fn2
+      -
+        componentId: fn3
+  -
+    origin:
+      componentId: fn2
+    targets:
+      -
+        componentId: db1

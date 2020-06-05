@@ -1,0 +1,6 @@
+--- 
+components: 
+  - 
+    kind: storage
+    label: "*.jpg\n*.png"
+    provider: "AWS S3"

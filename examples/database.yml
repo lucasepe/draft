@@ -1,0 +1,5 @@
+--- 
+components: 
+  - 
+    kind: database
+    label: "Users\nRepository"

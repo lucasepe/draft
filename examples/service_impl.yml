@@ -1,0 +1,6 @@
+--- 
+components: 
+  - 
+    kind: service
+    label: "μService"
+    provider: AWS EC2
