@@ -7,7 +7,6 @@ A commandline tool that generate **H**igh **L**evel microservice & serverless **
 - It Does One Thing Well
 - Input data in flat YAML text files
 - Usable with shell scripts
-- Can take input from pipes `cat`
 
 ## How `draft` works?
 
