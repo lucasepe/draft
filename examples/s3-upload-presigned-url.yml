@@ -1,0 +1,37 @@
+title: Upload file to S3 using Lambda for pre-signed URL
+backgroundColor: '#ffffff'
+components:
+  -
+    kind: client
+    label: "Web App"
+    provider: SPA
+  -
+    kind: gateway
+    provider: "AWS API Gateway"
+  -
+    kind: function
+    label: "Get\nPre-Signed URL"
+    provider: "AWS Lambda"
+  -
+    kind: storage
+    label: "*.jpg\n*.png"
+    provider: "AWS S3"
+connections:
+  -
+    origin:
+      componentId: cl1
+    targets:
+      -
+        componentId: gt1
+  -
+    origin:
+      componentId: gt1
+    targets:
+      -
+        componentId: fn1
+  -
+    origin:
+      componentId: fn1
+    targets:
+      -
+        componentId: st1
