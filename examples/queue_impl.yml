@@ -1,6 +1,0 @@
---- 
-components: 
-  - 
-    kind: queue
-    label: "event queue"
-    provider: "AWS SQS"

@@ -24,7 +24,7 @@ func (rcv *function) sketch(graph *dot.Graph, comp Component) {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Provider))
+	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label(comp.Label),

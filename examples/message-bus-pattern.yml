@@ -4,27 +4,21 @@ components:
   - 
     kind: service
     label: Producer
-    provider: AWS EC2
   -
     kind: broker
     label: "Notification\nService"
-    provider: AWS SNS
   -
     kind: queue
     label: "event queue @ topic 1"
-    provider: AWS SQS
   -
     kind: queue
     label: "event queue @ topic 2"
-    provider: AWS SQS
   -
     kind: service
     label: "Consumer\n@ topic 1"
-    provider: AWS EC2
   -
     kind: service
     label: "Consumer\n@ topic 2"
-    provider: AWS EC2
 connections:
   -
     origin: 

@@ -4,18 +4,22 @@ components:
   -
     kind: client
     label: "Web App"
-    provider: SPA
+    provider: Internet
+    impl: SPA
   -
     kind: gateway
-    provider: "AWS API Gateway"
+    provider: AWS
+    impl: "API Gateway"
   -
     kind: function
     label: "Get\nPre-Signed URL"
-    provider: "AWS Lambda"
+    provider: AWS
+    impl: Lambda
   -
     kind: storage
     label: "*.jpg\n*.png"
-    provider: "AWS S3"
+    provider: AWS
+    impl: S3
 connections:
   -
     origin:

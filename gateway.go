@@ -24,15 +24,9 @@ func (rcv *gateway) sketch(graph *dot.Graph, comp Component) {
 		id = rcv.nextID()
 	}
 
-	label := comp.Label
-	if strings.TrimSpace(comp.Label) == "" {
-		label = "API Gateway"
-	}
-
-	cl := cluster.New(graph, id, cluster.Label(comp.Provider))
+	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(label),
 		node.Rounded(comp.Rounded),
 		node.FontColor(comp.FontColor),
 		node.FillColor(comp.FillColor, "#ff7f00ff"),

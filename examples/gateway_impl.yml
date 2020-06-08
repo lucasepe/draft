@@ -1,7 +1,0 @@
---- 
-components: 
-  - 
-    kind: gateway
-    label: "API Gateway"
-    fontColor: '#fafafaff'
-    provider: "AWS API\nGateway"

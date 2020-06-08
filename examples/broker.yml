@@ -2,4 +2,3 @@
 components: 
   - 
     kind: broker
-    label: "Message Broker"

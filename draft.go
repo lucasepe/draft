@@ -3,8 +3,10 @@ package draft
 import (
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/emicklei/dot"
+	"github.com/lucasepe/draft/pkg/cluster"
 	"github.com/lucasepe/draft/pkg/edge"
 	"github.com/lucasepe/draft/pkg/graph"
 	"gopkg.in/yaml.v2"
@@ -41,6 +43,7 @@ type Component struct {
 	ID        string `yaml:"id,omitempty"`
 	Kind      string `yaml:"kind"`
 	Label     string `yaml:"label,omitempty"`
+	Impl      string `yaml:"impl,omitempty"`
 	Provider  string `yaml:"provider,omitempty"`
 	FillColor string `yaml:"fillColor,omitempty"`
 	FontColor string `yaml:"fontColor,omitempty"`
@@ -109,7 +112,16 @@ func sketchComponents(graph *dot.Graph, draft *Draft) error {
 			return fmt.Errorf("render not found for component of kind '%s'", el.Kind)
 		}
 
-		sketcher.sketch(graph, el)
+		parent := graph
+		if strings.TrimSpace(el.Provider) != "" {
+			parent = cluster.New(graph, el.Provider,
+				cluster.PenColor("#d9cc31"),
+				cluster.FontName("Fira Mono"),
+				cluster.FontSize(10),
+				cluster.FontColor("#63625b"))
+		}
+
+		sketcher.sketch(parent, el)
 	}
 
 	return nil

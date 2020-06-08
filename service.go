@@ -24,14 +24,14 @@ func (rcv *service) sketch(graph *dot.Graph, comp Component) {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Provider))
+	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label(comp.Label),
 		node.Rounded(comp.Rounded),
 		node.FontColor(comp.FontColor),
 		node.FillColor(comp.FillColor, "#f5f5dcff"),
-		node.Shape("box"),
+		node.Shape("octagon"),
 	)
 	el.Attr("height", "0.5")
 }

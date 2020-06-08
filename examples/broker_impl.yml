@@ -1,6 +1,0 @@
---- 
-components: 
-  - 
-    kind: broker
-    label: "Message Broker"
-    provider: AWS SNS
