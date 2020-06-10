@@ -27,7 +27,7 @@ func (rcv *client) sketch(graph *dot.Graph, comp Component) {
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(comp.Label),
+		node.Label(comp.Label, false),
 		node.Rounded(comp.Rounded),
 		node.FontColor(comp.FontColor),
 		node.FillColor(comp.FillColor, "#90ee90ff"),

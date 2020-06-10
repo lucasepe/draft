@@ -9,16 +9,16 @@ import (
 	"github.com/lucasepe/draft/pkg/node"
 )
 
-type storage struct {
+type balancer struct {
 	seq int16
 }
 
-func (rcv *storage) nextID() string {
+func (rcv *balancer) nextID() string {
 	rcv.seq++
-	return fmt.Sprintf("st%d", rcv.seq)
+	return fmt.Sprintf("lb%d", rcv.seq)
 }
 
-func (rcv *storage) sketch(graph *dot.Graph, comp Component) {
+func (rcv *balancer) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
@@ -27,12 +27,11 @@ func (rcv *storage) sketch(graph *dot.Graph, comp Component) {
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(comp.Label, false),
+		node.Label("LB", false),
 		node.Rounded(comp.Rounded),
 		node.FontColor(comp.FontColor),
-		node.FillColor(comp.FillColor, "#f0e77fff"),
-		node.FontSize(8),
-		node.Shape("folder"),
+		node.FillColor(comp.FillColor, "#1a5276ff"),
+		node.Shape("Mdiamond"),
 	)
-	el.Attr("height", "0.4")
+	el.Attr("height", "0.3")
 }

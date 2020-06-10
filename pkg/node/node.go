@@ -9,9 +9,13 @@ import (
 
 type Attribute func(*dot.Node)
 
-func Label(label string) Attribute {
+func Label(label string, htm bool) Attribute {
 	return func(el *dot.Node) {
-		el.Attr("label", label)
+		if htm {
+			el.Attr("label", dot.HTML(label))
+		} else {
+			el.Attr("label", label)
+		}
 	}
 }
 
@@ -66,6 +70,7 @@ func FontSize(size float32) Attribute {
 
 func New(cluster *dot.Graph, id string, attrs ...Attribute) *dot.Node {
 	el := cluster.Node(id)
+	el.Attr("style", "filled")
 
 	// default attributes
 	FontName("Fira Mono")(&el)

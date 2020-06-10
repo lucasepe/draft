@@ -11,10 +11,14 @@ components:
     fillColor: '#708090'
   -
     kind: gateway
-    label: "Web BFF\nAPI Gateway"
+    impl: |
+      Web BFF
+      API Gateway
   -
     kind: gateway
-    label: "Mobile BFF\nAPI Gateway"
+    impl: |
+      Mobile BFF
+      API Gateway
   -
     kind: service
     label: μService A

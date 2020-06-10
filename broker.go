@@ -24,22 +24,17 @@ func (rcv *broker) sketch(graph *dot.Graph, comp Component) {
 		id = rcv.nextID()
 	}
 
-	label := comp.Label
-	if strings.TrimSpace(comp.Label) == "" {
-		label = "Message\nBroker"
-	}
-
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(label),
+		node.Label("Message Broker", false),
 		node.Rounded(comp.Rounded),
+		node.FontSize(7),
 		node.FontColor(comp.FontColor),
 		node.FillColor(comp.FillColor, "#e0eeeeff"),
 		node.Shape("cds"),
 	)
-	el.Attr("height", "0.6")
-	el.Attr("width", "1.2")
+	el.Attr("width", "1.4")
 }
 
 /** Alternative

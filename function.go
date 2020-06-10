@@ -24,10 +24,15 @@ func (rcv *function) sketch(graph *dot.Graph, comp Component) {
 		id = rcv.nextID()
 	}
 
+	label := id
+	if strings.TrimSpace(comp.Label) != "" {
+		label = comp.Label
+	}
+
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(comp.Label),
+		node.Label(label, false),
 		node.Rounded(comp.Rounded),
 		node.FontColor(comp.FontColor),
 		node.FillColor(comp.FillColor, "#abd9e9ff"),

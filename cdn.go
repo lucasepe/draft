@@ -9,16 +9,16 @@ import (
 	"github.com/lucasepe/draft/pkg/node"
 )
 
-type storage struct {
+type cdn struct {
 	seq int16
 }
 
-func (rcv *storage) nextID() string {
+func (rcv *cdn) nextID() string {
 	rcv.seq++
-	return fmt.Sprintf("st%d", rcv.seq)
+	return fmt.Sprintf("cn%d", rcv.seq)
 }
 
-func (rcv *storage) sketch(graph *dot.Graph, comp Component) {
+func (rcv *cdn) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
@@ -27,12 +27,10 @@ func (rcv *storage) sketch(graph *dot.Graph, comp Component) {
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(comp.Label, false),
-		node.Rounded(comp.Rounded),
+		node.Label("CDN", false),
 		node.FontColor(comp.FontColor),
-		node.FillColor(comp.FillColor, "#f0e77fff"),
-		node.FontSize(8),
-		node.Shape("folder"),
+		node.FillColor(comp.FillColor, "#47df9aff"),
+		node.Shape("Mcircle"),
 	)
-	el.Attr("height", "0.4")
+	el.Attr("height", "0.5")
 }

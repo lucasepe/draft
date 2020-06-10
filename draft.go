@@ -13,6 +13,7 @@ import (
 )
 
 const (
+	kindHTML     = "html"
 	kindClient   = "client"
 	kindGateway  = "gateway"
 	kindService  = "service"
@@ -21,6 +22,9 @@ const (
 	kindStorage  = "storage"
 	kindDatabase = "database"
 	kindFunction = "function"
+	kindBalancer = "balancer"
+	kindCDN      = "cdn"
+	kindDNS      = "dns"
 )
 
 // Connection is a link between two components.
@@ -68,6 +72,7 @@ func NewDraft(r io.Reader) (*Draft, error) {
 		sketchers: map[string]interface {
 			sketch(*dot.Graph, Component)
 		}{
+			kindHTML:     &html{},
 			kindClient:   &client{},
 			kindGateway:  &gateway{},
 			kindService:  &service{},
@@ -76,6 +81,9 @@ func NewDraft(r io.Reader) (*Draft, error) {
 			kindFunction: &function{},
 			kindStorage:  &storage{},
 			kindDatabase: &database{},
+			kindBalancer: &balancer{},
+			kindCDN:      &cdn{},
+			kindDNS:      &dns{},
 		},
 	}
 

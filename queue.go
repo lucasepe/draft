@@ -27,13 +27,13 @@ func (rcv *queue) sketch(graph *dot.Graph, comp Component) {
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label(comp.Label),
 		node.Rounded(comp.Rounded),
 		node.FontColor(comp.FontColor),
+		node.FontSize(7),
 		node.FillColor("", "transparent"),
 		// ^^^ hack to set a transparent background
 		// color since we will use the HTML table.
-		node.Shape("plaintext"),
+		node.Shape("plain"),
 	)
 
 	caption := strings.TrimSpace(comp.Label)
@@ -51,7 +51,7 @@ func (rcv *queue) sketch(graph *dot.Graph, comp Component) {
 	<tr><td border="1" style="dashed" bgcolor="%s">msg N</td>
 		<td border="1" style="dashed" bgcolor="%s">...</td>
 		<td border="1" style="dashed" bgcolor="%s">msg 1</td></tr>
-	<tr><td border="0" colspan="3"><font point-size="8">%s</font></td></tr>
+	<tr><td border="0" colspan="3"><font point-size="7">%s</font></td></tr>
 	</table>`, fillColor, fillColor, fillColor, caption)
 
 	el.Attr("label", dot.HTML(label))

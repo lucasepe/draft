@@ -9,16 +9,16 @@ import (
 	"github.com/lucasepe/draft/pkg/node"
 )
 
-type gateway struct {
+type html struct {
 	seq int16
 }
 
-func (rcv *gateway) nextID() string {
+func (rcv *html) nextID() string {
 	rcv.seq++
-	return fmt.Sprintf("gt%d", rcv.seq)
+	return fmt.Sprintf("htm%d", rcv.seq)
 }
 
-func (rcv *gateway) sketch(graph *dot.Graph, comp Component) {
+func (rcv *html) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
@@ -26,12 +26,11 @@ func (rcv *gateway) sketch(graph *dot.Graph, comp Component) {
 
 	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
 
-	el := node.New(cl, id,
-		node.Label("GW", false),
-		node.Rounded(comp.Rounded),
+	node.New(cl, id,
+		node.Label(comp.Label, true),
 		node.FontColor(comp.FontColor),
-		node.FillColor(comp.FillColor, "#ff7f00ff"),
-		node.Shape("doublecircle"),
+		node.FillColor("", "transparent"),
+		node.FontSize(7),
+		node.Shape("plain"),
 	)
-	el.Attr("width", "0.3")
 }
