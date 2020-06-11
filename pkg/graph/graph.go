@@ -30,15 +30,17 @@ func FontSize(size float32) Attribute {
 	}
 }
 
-func LeftToRight() Attribute {
+func RankDir(dir string) Attribute {
 	return func(el *dot.Graph) {
-		el.Attr("rankdir", "LR")
+		el.Attr("rankdir", dir)
 	}
 }
 
-func TopToBottom() Attribute {
+func BottomTop(enable bool) Attribute {
 	return func(el *dot.Graph) {
-		el.Attr("rankdir", "TB")
+		if enable {
+			el.Attr("rankdir", "BT")
+		}
 	}
 }
 
@@ -46,6 +48,23 @@ func RankSep(size float32) Attribute {
 	return func(el *dot.Graph) {
 		fs := fmt.Sprintf("%.2f", size)
 		el.Attr("ranksep", fs)
+	}
+}
+
+func NodeSep(size float32) Attribute {
+	return func(el *dot.Graph) {
+		fs := fmt.Sprintf("%.2f", size)
+		el.Attr("nodesep", fs)
+	}
+}
+
+func Ortho(enable bool) Attribute {
+	return func(el *dot.Graph) {
+		if enable {
+			el.Attr("splines", "ortho")
+		} else {
+			el.Attr("splines", "line")
+		}
 	}
 }
 
@@ -61,11 +80,14 @@ func BackgroundColor(color string) Attribute {
 
 func New(attrs ...Attribute) *dot.Graph {
 	el := dot.NewGraph(dot.Directed)
+	el.Attr("newrank", "true")
+	el.Attr("labelloc", "t")
 
 	FontName("Fira Mono Bold")(el)
 	FontSize(13)(el)
-	LeftToRight()(el)
+	RankDir("LR")(el)
 	RankSep(1.1)(el)
+	NodeSep(0.8)(el)
 
 	for _, opt := range attrs {
 		opt(el)

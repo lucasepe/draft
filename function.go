@@ -18,7 +18,7 @@ func (rcv *function) nextID() string {
 	return fmt.Sprintf("fn%d", rcv.seq)
 }
 
-func (rcv *function) sketch(graph *dot.Graph, comp Component) {
+func (rcv *function) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
@@ -29,7 +29,7 @@ func (rcv *function) sketch(graph *dot.Graph, comp Component) {
 		label = comp.Label
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label(label, false),

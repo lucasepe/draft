@@ -60,20 +60,22 @@ Eventually you can describe...
 
 Below is a list of all the components currently implemented.
 
-| Component          | Kind        | YAML                                                          | Output                            |
-|:-------------------|:------------|:--------------------------------------------------------------|:---------------------------------:|
-| **Client**         | `client`    | 👉 [examples/client.yml](./examples/client.yml)               | ![](./examples/client.png)        |
-| **Microservice**   | `service`   | 👉 [examples/service.yml](./examples/service.yml)             | ![](./examples/service.png)       |
-| **Gateway**        | `gateway`   | 👉 [examples/gateway.yml](./examples/gateway.yml)             | ![](./examples/gateway.png)       |
-| **Message Broker** | `broker`    | 👉 [examples/broker.yml](./examples/broker.yml)               | ![](./examples/broker.png)        |
-| **Queue Service**  | `queue`     | 👉 [examples/queue.yml](./examples/queue.yml)                 | ![](./examples/queue.png)         |
-| **Object Storage** | `storage`   | 👉 [examples/storage.yml](./examples/storage.yml)             | ![](./examples/storage.png)       |
-| **Function**       | `function`  | 👉 [examples/function.yml](./examples/function.yml)           | ![](./examples/function.png)      |
-| **Database**       | `database`  | 👉 [examples/database.yml](./examples/database.yml)           | ![](./examples/database.png)      |
-| **Load Balancer**  | `balancer`  | 👉 [examples/balancer.yml](./examples/balancer.yml)           | ![](./examples/balancer.png)      |
-| **CDN**            | `cdn`       | 👉 [examples/cdn.yml](./examples/cdn.yml)                     | ![](./examples/cdn.png)           |
-| **DNS**            | `dns`       | 👉 [examples/dns.yml](./examples/dns.yml)                     | ![](./examples/dns.png)           |
-| **Custom Html**    | `html`      | 👉 [examples/custom_image.yml](./examples/custom_image.yml)   | ![](./examples/custom_image.png)  |
+| Component             | Kind        | YAML                                                          | Output                            |
+|:----------------------|:------------|:--------------------------------------------------------------|:---------------------------------:|
+| **Client**            | `client`    | 👉 [examples/client.yml](./examples/client.yml)               | ![](./examples/client.png)        |
+| **Microservice**      | `service`   | 👉 [examples/service.yml](./examples/service.yml)             | ![](./examples/service.png)       |
+| **Gateway**           | `gateway`   | 👉 [examples/gateway.yml](./examples/gateway.yml)             | ![](./examples/gateway.png)       |
+| **Firewall**          | `waf`       | 👉 [examples/waf.yml](./examples/waf.yml)                     | ![](./examples/waf.png)           |
+| **Container Service** | `cos`       | 👉 [examples/waf.yml](./examples/cos.yml)                     | ![](./examples/cos.png)           |
+| **Message Broker**    | `broker`    | 👉 [examples/broker.yml](./examples/broker.yml)               | ![](./examples/broker.png)        |
+| **Queue Service**     | `queue`     | 👉 [examples/queue.yml](./examples/queue.yml)                 | ![](./examples/queue.png)         |
+| **Object Storage**    | `storage`   | 👉 [examples/storage.yml](./examples/storage.yml)             | ![](./examples/storage.png)       |
+| **Function**          | `function`  | 👉 [examples/function.yml](./examples/function.yml)           | ![](./examples/function.png)      |
+| **Database**          | `database`  | 👉 [examples/database.yml](./examples/database.yml)           | ![](./examples/database.png)      |
+| **Load Balancer**     | `balancer`  | 👉 [examples/balancer.yml](./examples/balancer.yml)           | ![](./examples/balancer.png)      |
+| **CDN**               | `cdn`       | 👉 [examples/cdn.yml](./examples/cdn.yml)                     | ![](./examples/cdn.png)           |
+| **DNS**               | `dns`       | 👉 [examples/dns.yml](./examples/dns.yml)                     | ![](./examples/dns.png)           |
+| **Custom Html**       | `html`      | 👉 [examples/custom_image.yml](./examples/custom_image.yml)   | ![](./examples/custom_image.png)  |
 
 For custom HTML components (_kind: html_) only these tags are supported:
 
@@ -96,6 +98,7 @@ An auto-generated component `id` has a prefix and a sequential number
 | `client`     | cl                                   | _cl1, cl2,..._   |
 | `service`    | ms                                   | _ms1, ms2,..._   |
 | `gateway`    | gt                                   | _gt1, gt2,..._   |
+| `gateway`    | waf                                  | _waf1, waf2,..._ |
 | `broker`     | br                                   | _br1, br2,..._   |
 | `queue`      | qs                                   | _qs1, qs2,..._   |
 | `storage`    | st                                   | _st1, st2,..._   |
@@ -105,6 +108,7 @@ An auto-generated component `id` has a prefix and a sequential number
 | `cdn`        | cn                                   | _cn1, cn2,..._   |
 | `dns`        | dn                                   | _dn1, dn2,..._   |
 | `html`       | htm                                  | _htm1, htm2,..._ |            
+| `cos`        | cos                                  | _cos1, cos2,..._ |   
 
 ## Connections
 
@@ -171,6 +175,19 @@ draft s3-upload-presigned-url.yml | dot -Tpng > s3-upload-presigned-url.png
 ```
 
 ![](./examples/s3-upload-presigned-url.png)
+
+## Example 4 - A system view
+
+The `draft` architecture descriptor YAML file is here 👉 [./examples/system-view.yml](./examples/system-view.yml)
+
+Running `draft` with this command:
+
+```bash
+draft system-view.yml | dot -Tpng > system-view.png
+```
+
+![](./examples/system-view.png)
+
 
 ## Others examples
 

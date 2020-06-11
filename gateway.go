@@ -18,13 +18,13 @@ func (rcv *gateway) nextID() string {
 	return fmt.Sprintf("gt%d", rcv.seq)
 }
 
-func (rcv *gateway) sketch(graph *dot.Graph, comp Component) {
+func (rcv *gateway) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label("GW", false),
@@ -33,5 +33,5 @@ func (rcv *gateway) sketch(graph *dot.Graph, comp Component) {
 		node.FillColor(comp.FillColor, "#ff7f00ff"),
 		node.Shape("doublecircle"),
 	)
-	el.Attr("width", "0.3")
+	el.Attr("width", "0.2")
 }

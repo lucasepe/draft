@@ -18,13 +18,13 @@ func (rcv *queue) nextID() string {
 	return fmt.Sprintf("qs%d", rcv.seq)
 }
 
-func (rcv *queue) sketch(graph *dot.Graph, comp Component) {
+func (rcv *queue) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Rounded(comp.Rounded),

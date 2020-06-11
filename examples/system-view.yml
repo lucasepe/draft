@@ -1,0 +1,123 @@
+title: System View - Token Manager
+backgroundColor: '#ffffff'
+components:
+  -
+    kind: client
+    impl: SPA / iOS / Android
+    label: Client App
+  -
+    kind: waf
+    impl: AWS WAF
+    provider: AWS
+  -
+    kind: cdn
+    impl: AWS Cloudfront
+    provider: AWS
+  -
+    kind: gateway
+    impl: API Gateway
+    provider: AWS
+  -
+    kind: balancer
+    impl: AWS NLB
+    provider: AWS
+  -
+    kind: function
+    label: Verify JWT
+    impl: AWS Lambda
+    provider: AWS
+  -
+    kind: function
+    label: Verify OTP
+    impl: AWS Lambda
+    provider: AWS
+  -
+    kind: cos
+    impl: AWS ECS
+    provider: AWS
+  -
+    kind: service
+    label: Token Manager
+    impl: AWS EC2
+    provider: AWS
+  -
+    kind: database
+    label: Redis
+    impl: Amazon ElastiCache
+    provider: AWS
+    fillColor: '#d82a0b'
+    fontColor: '#ffffff'
+  -
+    kind: storage
+    label: |
+      Object
+      Store
+    impl: AWS S3
+    provider: AWS
+    fillColor: '#571307'
+    fontColor: '#ffffff'
+  -
+    kind: database
+    label: MySQL
+    impl: Amazon RDS
+    provider: AWS
+    fillColor: '#285192'
+    fontColor: '#ffffff'
+connections:
+  -
+    origin:
+      componentId: cl1
+    targets:
+      -
+        componentId: waf1
+  -
+    origin:
+      componentId: waf1
+    targets:
+      -
+        componentId: cn1
+  -
+    origin:
+      componentId: cn1
+    targets:
+      -
+        componentId: gt1
+  -
+    origin:
+      componentId: gt1
+    targets:
+      -
+        componentId: lb1
+      -
+        componentId: fn1
+      -
+        componentId: fn2
+  -
+    origin:
+      componentId: lb1
+    targets:
+      -
+        componentId: cos1
+  -
+    origin:
+      componentId: cos1
+    targets:
+      -
+        componentId: ms1
+  -
+    origin:
+      componentId: ms1
+    targets:
+      -
+        componentId: db1
+      -
+        componentId: st1
+      -
+        componentId: db2
+ranks:
+  -
+    name: rank1
+    components:
+      - gt1
+      - lb1
+      - cos1

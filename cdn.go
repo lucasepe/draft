@@ -18,13 +18,13 @@ func (rcv *cdn) nextID() string {
 	return fmt.Sprintf("cn%d", rcv.seq)
 }
 
-func (rcv *cdn) sketch(graph *dot.Graph, comp Component) {
+func (rcv *cdn) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label("CDN", false),

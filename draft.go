@@ -13,18 +13,20 @@ import (
 )
 
 const (
-	kindHTML     = "html"
-	kindClient   = "client"
-	kindGateway  = "gateway"
-	kindService  = "service"
-	kindQueue    = "queue"
-	kindBroker   = "broker"
-	kindStorage  = "storage"
-	kindDatabase = "database"
-	kindFunction = "function"
-	kindBalancer = "balancer"
-	kindCDN      = "cdn"
-	kindDNS      = "dns"
+	kindHTML             = "html"
+	kindClient           = "client"
+	kindGateway          = "gateway"
+	kindService          = "service"
+	kindQueue            = "queue"
+	kindBroker           = "broker"
+	kindStorage          = "storage"
+	kindDatabase         = "database"
+	kindFunction         = "function"
+	kindBalancer         = "balancer"
+	kindCDN              = "cdn"
+	kindDNS              = "dns"
+	kindFirewall         = "waf"
+	kindContainerService = "cos"
 )
 
 // Connection is a link between two components.
@@ -60,30 +62,39 @@ type Draft struct {
 	BackgroundColor string       `yaml:"backgroundColor,omitempty"`
 	Components      []Component  `yaml:"components"`
 	Connections     []Connection `yaml:"connections,omitempty"`
+	Ranks           []struct {
+		Name       string   `yaml:"name"`
+		Components []string `yaml:"components"`
+	} `yaml:"ranks,omitempty"`
 
 	sketchers map[string]interface {
-		sketch(*dot.Graph, Component)
+		sketch(*dot.Graph, Component, bool)
 	}
+
+	bottomTop bool
+	ortho     bool
 }
 
 // NewDraft returns a new decoded Draft struct
 func NewDraft(r io.Reader) (*Draft, error) {
 	res := &Draft{
 		sketchers: map[string]interface {
-			sketch(*dot.Graph, Component)
+			sketch(*dot.Graph, Component, bool)
 		}{
-			kindHTML:     &html{},
-			kindClient:   &client{},
-			kindGateway:  &gateway{},
-			kindService:  &service{},
-			kindBroker:   &broker{},
-			kindQueue:    &queue{},
-			kindFunction: &function{},
-			kindStorage:  &storage{},
-			kindDatabase: &database{},
-			kindBalancer: &balancer{},
-			kindCDN:      &cdn{},
-			kindDNS:      &dns{},
+			kindHTML:             &html{},
+			kindClient:           &client{},
+			kindGateway:          &gateway{},
+			kindService:          &service{},
+			kindBroker:           &broker{},
+			kindQueue:            &queue{},
+			kindFunction:         &function{},
+			kindStorage:          &storage{},
+			kindDatabase:         &database{},
+			kindBalancer:         &balancer{},
+			kindCDN:              &cdn{},
+			kindDNS:              &dns{},
+			kindFirewall:         &waf{},
+			kindContainerService: &containerService{},
 		},
 	}
 
@@ -98,9 +109,22 @@ func NewDraft(r io.Reader) (*Draft, error) {
 	return res, nil
 }
 
+// BottomTop enable the bottom top layout
+func (ark *Draft) BottomTop(val bool) {
+	ark.bottomTop = val
+}
+
+// Ortho if true edges are drawn as line segments
+func (ark *Draft) Ortho(val bool) {
+	ark.ortho = val
+}
+
 // Sketch generates the GraphViz definition for this architecture diagram.
 func (ark *Draft) Sketch() (string, error) {
-	g := graph.New(graph.BackgroundColor(ark.BackgroundColor), graph.Label(ark.Title))
+	g := graph.New(graph.BackgroundColor(ark.BackgroundColor),
+		graph.Ortho(ark.ortho),
+		graph.BottomTop(ark.bottomTop),
+		graph.Label(ark.Title))
 
 	if err := sketchComponents(g, ark); err != nil {
 		return "", err
@@ -109,6 +133,8 @@ func (ark *Draft) Sketch() (string, error) {
 	if err := sketchConnections(g, ark); err != nil {
 		return "", err
 	}
+
+	sketchSameRanks(g, ark)
 
 	return g.String(), nil
 }
@@ -129,7 +155,7 @@ func sketchComponents(graph *dot.Graph, draft *Draft) error {
 				cluster.FontColor("#63625b"))
 		}
 
-		sketcher.sketch(parent, el)
+		sketcher.sketch(parent, el, draft.bottomTop)
 	}
 
 	return nil
@@ -154,4 +180,16 @@ func sketchConnections(graph *dot.Graph, draft *Draft) error {
 	}
 
 	return nil
+}
+
+func sketchSameRanks(graph *dot.Graph, draft *Draft) {
+	for _, grp := range draft.Ranks {
+		if name := strings.TrimSpace(grp.Name); len(name) > 0 {
+			for _, el := range grp.Components {
+				if n, ok := graph.FindNodeById(el); ok {
+					graph.AddToSameRank(name, n)
+				}
+			}
+		}
+	}
 }

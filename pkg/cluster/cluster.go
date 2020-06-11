@@ -50,6 +50,16 @@ func FontSize(size float32) Attribute {
 	}
 }
 
+func BottomTop(bt bool) Attribute {
+	return func(el *dot.Graph) {
+		if bt {
+			el.Attr("labelloc", "b")
+		} else {
+			el.Attr("labelloc", "t")
+		}
+	}
+}
+
 func New(parent *dot.Graph, id string, attrs ...Attribute) *dot.Graph {
 	cluster := parent.Subgraph(id, dot.ClusterOption{})
 

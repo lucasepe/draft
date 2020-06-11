@@ -9,30 +9,33 @@ import (
 	"github.com/lucasepe/draft/pkg/node"
 )
 
-type balancer struct {
+type waf struct {
 	seq int16
 }
 
-func (rcv *balancer) nextID() string {
+func (rcv *waf) nextID() string {
 	rcv.seq++
-	return fmt.Sprintf("lb%d", rcv.seq)
+	return fmt.Sprintf("waf%d", rcv.seq)
 }
 
-func (rcv *balancer) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
+func (rcv *waf) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
+	fontColor := "#fafafaff"
+	if strings.TrimSpace(comp.FontColor) != "" {
+		fontColor = comp.FontColor
+	}
+
 	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
-		node.Label("LB", false),
-		node.Rounded(comp.Rounded),
-		node.FontColor(comp.FontColor),
-		node.FillColor(comp.FillColor, "#1a5276ff"),
-		node.Shape("Mdiamond"),
+		node.Label("FW", false),
+		node.FontColor(fontColor),
+		node.FillColor(comp.FillColor, "#f3190b"),
+		node.Shape("invhouse"),
 	)
 	el.Attr("width", "0.3")
-	el.Attr("height", "0.3")
 }

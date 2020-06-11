@@ -18,13 +18,13 @@ func (rcv *broker) nextID() string {
 	return fmt.Sprintf("br%d", rcv.seq)
 }
 
-func (rcv *broker) sketch(graph *dot.Graph, comp Component) {
+func (rcv *broker) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label("Message Broker", false),

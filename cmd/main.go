@@ -28,6 +28,9 @@ var (
 	version = "dev"
 	commit  = "none"
 	date    = "unknown"
+
+	flagBottomTop bool
+	flagOrtho     bool
 )
 
 func main() {
@@ -48,6 +51,9 @@ func main() {
 
 	ark, err := draft.NewDraft(file)
 	handleErr(err)
+
+	ark.BottomTop(flagBottomTop)
+	ark.Ortho(flagOrtho)
 
 	str, err := ark.Sketch()
 	handleErr(err)
@@ -86,6 +92,9 @@ func configureFlags() {
 
 	flag.CommandLine.SetOutput(ioutil.Discard) // hide flag errors
 	flag.CommandLine.Init(os.Args[0], flag.ExitOnError)
+
+	flag.CommandLine.BoolVar(&flagBottomTop, "bottom-top", false, "if true sets layout dir as bottom top")
+	flag.CommandLine.BoolVar(&flagOrtho, "ortho", false, "if true edges are drawn as line segments")
 
 	flag.CommandLine.Parse(os.Args[1:])
 }

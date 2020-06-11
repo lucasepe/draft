@@ -18,13 +18,13 @@ func (rcv *storage) nextID() string {
 	return fmt.Sprintf("st%d", rcv.seq)
 }
 
-func (rcv *storage) sketch(graph *dot.Graph, comp Component) {
+func (rcv *storage) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label(comp.Label, false),
