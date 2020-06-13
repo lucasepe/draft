@@ -1,5 +1,7 @@
 # Draft
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; ![Go Coverage](https://img.shields.io/badge/go%20coverage-74%25-brightgreen.svg?longCache=true&style=flat)
+
 A commandline tool that generate **H**igh **L**evel microservice & serverless **A**rchitecture diagrams using a declarative syntax defined in a YAML file.
 
 - Works on [linux, macOS, windows](https://github.com/lucasepe/draft/releases/latest)
