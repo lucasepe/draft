@@ -54,6 +54,8 @@ type Component struct {
 	FillColor string `yaml:"fillColor,omitempty"`
 	FontColor string `yaml:"fontColor,omitempty"`
 	Rounded   bool   `yaml:"rounded,omitempty"`
+
+	bottomTop bool
 }
 
 // Draft represents a whole diagram.
@@ -68,18 +70,24 @@ type Draft struct {
 	} `yaml:"ranks,omitempty"`
 
 	sketchers map[string]interface {
-		sketch(*dot.Graph, Component, bool)
+		sketch(*dot.Graph, Component)
 	}
 
 	bottomTop bool
 	ortho     bool
 }
 
+// BottomTop return true if this component
+// must be sketched in a bottom top layout
+func (co *Component) BottomTop() bool {
+	return co.bottomTop
+}
+
 // NewDraft returns a new decoded Draft struct
 func NewDraft(r io.Reader) (*Draft, error) {
 	res := &Draft{
 		sketchers: map[string]interface {
-			sketch(*dot.Graph, Component, bool)
+			sketch(*dot.Graph, Component)
 		}{
 			kindHTML:             &html{},
 			kindClient:           &client{},
@@ -141,6 +149,8 @@ func (ark *Draft) Sketch() (string, error) {
 
 func sketchComponents(graph *dot.Graph, draft *Draft) error {
 	for _, el := range draft.Components {
+		el.bottomTop = draft.bottomTop
+
 		sketcher, ok := draft.sketchers[el.Kind]
 		if !ok {
 			return fmt.Errorf("render not found for component of kind '%s'", el.Kind)
@@ -155,7 +165,7 @@ func sketchComponents(graph *dot.Graph, draft *Draft) error {
 				cluster.FontColor("#63625b"))
 		}
 
-		sketcher.sketch(parent, el, draft.bottomTop)
+		sketcher.sketch(parent, el)
 	}
 
 	return nil

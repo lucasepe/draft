@@ -18,17 +18,17 @@ func (rcv *html) nextID() string {
 	return fmt.Sprintf("htm%d", rcv.seq)
 }
 
-func (rcv *html) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
+func (rcv *html) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
 
 	node.New(cl, id,
 		node.Label(comp.Label, true),
-		node.FontColor(comp.FontColor),
+		node.FontColor(comp.FontColor, "#000000ff"),
 		node.FillColor("", "transparent"),
 		node.FontSize(7),
 		node.Shape("plain"),

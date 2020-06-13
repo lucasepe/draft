@@ -18,22 +18,17 @@ func (rcv *containerService) nextID() string {
 	return fmt.Sprintf("cos%d", rcv.seq)
 }
 
-func (rcv *containerService) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
+func (rcv *containerService) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	fontColor := "#fafafaff"
-	if strings.TrimSpace(comp.FontColor) != "" {
-		fontColor = comp.FontColor
-	}
-
-	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label("Container\nService", false),
-		node.FontColor(fontColor),
+		node.FontColor(comp.FontColor, "#fafafaff"),
 		node.FillColor(comp.FillColor, "#64a365"),
 		node.Shape("component"),
 	)

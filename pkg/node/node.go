@@ -7,8 +7,11 @@ import (
 	"github.com/emicklei/dot"
 )
 
+// Attribute is a function that apply a property to a node.
 type Attribute func(*dot.Node)
 
+// Label is the node caption. If 'htm' is true the
+// caption is treated as HTML code.
 func Label(label string, htm bool) Attribute {
 	return func(el *dot.Node) {
 		if htm {
@@ -19,12 +22,14 @@ func Label(label string, htm bool) Attribute {
 	}
 }
 
+// Shape sets the shape of a node.
 func Shape(shape string) Attribute {
 	return func(el *dot.Node) {
 		el.Attr("shape", shape)
 	}
 }
 
+// Rounded sets the shape with round corners.
 func Rounded(rounded bool) Attribute {
 	return func(el *dot.Node) {
 		if rounded {
@@ -35,6 +40,7 @@ func Rounded(rounded bool) Attribute {
 	}
 }
 
+// FillColor sets the node fill color.
 func FillColor(color, fallback string) Attribute {
 	return func(el *dot.Node) {
 		if strings.TrimSpace(color) != "" {
@@ -45,22 +51,25 @@ func FillColor(color, fallback string) Attribute {
 	}
 }
 
-func FontColor(color string) Attribute {
+// FontColor specify the text color.
+func FontColor(color, fallback string) Attribute {
 	return func(el *dot.Node) {
 		if strings.TrimSpace(color) != "" {
 			el.Attr("fontcolor", color)
 		} else {
-			el.Attr("fontcolor", "#000000ff")
+			el.Attr("fontcolor", fallback)
 		}
 	}
 }
 
+// FontName specify the font used for text.
 func FontName(name string) Attribute {
 	return func(el *dot.Node) {
 		el.Attr("fontname", name)
 	}
 }
 
+// FontSize specify the font size, in points, used for text.
 func FontSize(size float32) Attribute {
 	return func(el *dot.Node) {
 		fs := fmt.Sprintf("%.2f", size)
@@ -68,11 +77,12 @@ func FontSize(size float32) Attribute {
 	}
 }
 
+// New create a new node with the specified attributes.
 func New(cluster *dot.Graph, id string, attrs ...Attribute) *dot.Node {
 	el := cluster.Node(id)
-	el.Attr("style", "filled")
 
 	// default attributes
+	Rounded(false)(&el)
 	FontName("Fira Mono")(&el)
 	FontSize(9)(&el)
 

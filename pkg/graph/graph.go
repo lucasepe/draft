@@ -7,8 +7,10 @@ import (
 	"github.com/emicklei/dot"
 )
 
+// Attribute is a function that apply a property to a Graph.
 type Attribute func(*dot.Graph)
 
+// Label is the Graph title.
 func Label(label string) Attribute {
 	return func(el *dot.Graph) {
 		if strings.TrimSpace(label) != "" {
@@ -17,12 +19,14 @@ func Label(label string) Attribute {
 	}
 }
 
+// FontName specify the font used for the Graph title.
 func FontName(name string) Attribute {
 	return func(el *dot.Graph) {
 		el.Attr("fontname", name)
 	}
 }
 
+// FontSize specify the font size, in points, used for title.
 func FontSize(size float32) Attribute {
 	return func(el *dot.Graph) {
 		fs := fmt.Sprintf("%.2f", size)
@@ -30,12 +34,14 @@ func FontSize(size float32) Attribute {
 	}
 }
 
-func RankDir(dir string) Attribute {
+// LeftToRight sets direction of Graph layout from left to right.
+func LeftToRight() Attribute {
 	return func(el *dot.Graph) {
-		el.Attr("rankdir", dir)
+		el.Attr("rankdir", "LR")
 	}
 }
 
+// BottomTop sets direction of Graph layout from bottom to top.
 func BottomTop(enable bool) Attribute {
 	return func(el *dot.Graph) {
 		if enable {
@@ -44,13 +50,18 @@ func BottomTop(enable bool) Attribute {
 	}
 }
 
+// RankSep gives the desired rank separation, in inches.
+// This is the minimum vertical distance between the bottom
+// of the nodes in one rank and the tops of nodes in the next.
 func RankSep(size float32) Attribute {
 	return func(el *dot.Graph) {
-		fs := fmt.Sprintf("%.2f", size)
+		fs := fmt.Sprintf("%.2f equally", size)
 		el.Attr("ranksep", fs)
 	}
 }
 
+// NodeSep specifies the minimum space between two
+// adjacent nodes in the same rank, in inches.
 func NodeSep(size float32) Attribute {
 	return func(el *dot.Graph) {
 		fs := fmt.Sprintf("%.2f", size)
@@ -58,6 +69,7 @@ func NodeSep(size float32) Attribute {
 	}
 }
 
+// Ortho controls how edges are represented, if true lines are orthogonal.
 func Ortho(enable bool) Attribute {
 	return func(el *dot.Graph) {
 		if enable {
@@ -68,6 +80,7 @@ func Ortho(enable bool) Attribute {
 	}
 }
 
+// BackgroundColor sets the Graph background color.
 func BackgroundColor(color string) Attribute {
 	return func(el *dot.Graph) {
 		if strings.TrimSpace(color) != "" {
@@ -78,6 +91,7 @@ func BackgroundColor(color string) Attribute {
 	}
 }
 
+// New create a new Graph with the specified attributes.
 func New(attrs ...Attribute) *dot.Graph {
 	el := dot.NewGraph(dot.Directed)
 	el.Attr("newrank", "true")
@@ -85,7 +99,7 @@ func New(attrs ...Attribute) *dot.Graph {
 
 	FontName("Fira Mono Bold")(el)
 	FontSize(13)(el)
-	RankDir("LR")(el)
+	LeftToRight()(el)
 	RankSep(1.1)(el)
 	NodeSep(0.8)(el)
 

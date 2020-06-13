@@ -134,66 +134,18 @@ type Connection struct {
 }
 ```
 
-## Example 1 - Message Bus Pattern
+---
 
-The `draft` architecture descriptor YAML file is here 👉 [./examples/message-bus-pattern.yml](./examples/message-bus-pattern.yml)
+## Changelog
 
-Running `draft` with this command:
+👉 [Record of all notable changes made to a project](./CHANGELOG.md)
 
-```bash
-draft message-bus-pattern.yml | dot -Tpng > message-bus-pattern.png
-```
+---
 
-Will generate this output:
+## Examples
 
-![](./examples/message-bus-pattern.png)
+👉 [Collection of draft architecture descriptor YAML files](./examples/README.md)
 
-
-## Example 2 - AWS Cognito Custom Authentication Flow
-
-The `draft` architecture descriptor YAML file is here 👉 [./examples/aws-cognito-custom-auth-flow.yml](./examples/aws-cognito-custom-auth-flow.yml)
-
-Running `draft` with this command:
-
-```bash
-draft aws-cognito-custom-auth-flow.yml | dot -Tpng > aws-cognito-custom-auth-flow.png
-```
-
-Will generate this output:
-
-![](./examples/aws-cognito-custom-auth-flow.png)
-
-## Example 3 - Getting the pre-signed URL to Upload a file to Amazon S3
-
-
-The `draft` architecture descriptor YAML file is here 👉 [./examples/s3-upload-presigned-url.yml](./examples/s3-upload-presigned-url.yml)
-
-Running `draft` with this command:
-
-```bash
-draft s3-upload-presigned-url.yml | dot -Tpng > s3-upload-presigned-url.png
-```
-
-![](./examples/s3-upload-presigned-url.png)
-
-## Example 4 - A system view
-
-The `draft` architecture descriptor YAML file is here 👉 [./examples/system-view.yml](./examples/system-view.yml)
-
-Running `draft` with this command:
-
-```bash
-draft system-view.yml | dot -Tpng > system-view.png
-```
-
-![](./examples/system-view.png)
-
-
-## Others examples
-
-Check out the  👉 [./examples/](/examples/) folders for more `draft` architecture descriptor YAML examples.
-
- 
 ---
 
 (c) 2020 Luca Sepe http://lucasepe.it. MIT License

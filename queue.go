@@ -18,17 +18,17 @@ func (rcv *queue) nextID() string {
 	return fmt.Sprintf("qs%d", rcv.seq)
 }
 
-func (rcv *queue) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
+func (rcv *queue) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Rounded(comp.Rounded),
-		node.FontColor(comp.FontColor),
+		node.FontColor(comp.FontColor, "#000000ff"),
 		node.FontSize(7),
 		node.FillColor("", "transparent"),
 		// ^^^ hack to set a transparent background

@@ -18,22 +18,17 @@ func (rcv *waf) nextID() string {
 	return fmt.Sprintf("waf%d", rcv.seq)
 }
 
-func (rcv *waf) sketch(graph *dot.Graph, comp Component, bottomTop bool) {
+func (rcv *waf) sketch(graph *dot.Graph, comp Component) {
 	id := comp.ID
 	if strings.TrimSpace(comp.ID) == "" {
 		id = rcv.nextID()
 	}
 
-	fontColor := "#fafafaff"
-	if strings.TrimSpace(comp.FontColor) != "" {
-		fontColor = comp.FontColor
-	}
-
-	cl := cluster.New(graph, id, cluster.BottomTop(bottomTop), cluster.Label(comp.Impl))
+	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
 
 	el := node.New(cl, id,
 		node.Label("FW", false),
-		node.FontColor(fontColor),
+		node.FontColor(comp.FontColor, "#fafafaff"),
 		node.FillColor(comp.FillColor, "#f3190b"),
 		node.Shape("invhouse"),
 	)
