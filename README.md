@@ -1,6 +1,6 @@
 # Draft
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; ![Go Coverage](https://img.shields.io/badge/go%20coverage-74%25-brightgreen.svg?longCache=true&style=flat)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; ![Go Coverage](https://img.shields.io/badge/go%20coverage-74%25-brightgreen.svg?longCache=true&style=flat) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
 
 A commandline tool that generate **H**igh **L**evel microservice & serverless **A**rchitecture diagrams using a declarative syntax defined in a YAML file.
 
@@ -52,7 +52,7 @@ type Component struct {
 }
 ```
 
-Draft uses a set of symbols independent from the different providers (AWS, Microsoft Azure, GCP).
+Draft uses a set of symbols independent from the different providers (AWS, Microsoft Azure, GCP). 
 
 Eventually you can describe...
 
@@ -136,6 +136,8 @@ type Connection struct {
 }
 ```
 
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
+
 ---
 
 ## Changelog
@@ -150,4 +152,4 @@ type Connection struct {
 
 ---
 
-(c) 2020 Luca Sepe http://lucasepe.it. MIT License
+(c) 2020 Luca Sepe http://lucasepe.it. MIT License 
