@@ -57,8 +57,8 @@ Draft uses a set of symbols independent from the different providers (AWS, Micro
 Eventually you can describe...
 
 - the implementation using the `impl` attribute (ie: _impl: 'SQS'_)
-- the cloud provider using the `provider` attribute (ie: _provider: AWS_)
-  - 💡 components with the same provider will be 'grouped'
+- the group using the `outline` attribute (ie: _outline: AWS_)
+  - 💡 components with the same outline will be 'grouped'
 
 Below is a list of all the components currently implemented.
 
