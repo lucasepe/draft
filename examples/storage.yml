@@ -1,5 +1,0 @@
---- 
-components: 
-  - 
-    kind: storage
-    label: "*.jpg\n*.png"

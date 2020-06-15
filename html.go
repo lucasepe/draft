@@ -24,12 +24,17 @@ func (rcv *html) sketch(graph *dot.Graph, comp Component) {
 		id = rcv.nextID()
 	}
 
+	fontColor := "#000000ff"
+	if fc := strings.TrimSpace(comp.FontColor); fc != "" {
+		fontColor = fc
+	}
+
 	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
 
 	node.New(cl, id,
 		node.Label(comp.Label, true),
-		node.FontColor(comp.FontColor, "#000000ff"),
-		node.FillColor("", "transparent"),
+		node.FontColor(fontColor),
+		node.FillColor("transparent"),
 		node.FontSize(7),
 		node.Shape("plain"),
 	)

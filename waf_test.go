@@ -8,7 +8,7 @@ import (
 	"github.com/emicklei/dot"
 )
 
-func TestWAFComponentNextID(t *testing.T) {
+func TestWAFNextID(t *testing.T) {
 	tests := []struct {
 		want string
 	}{
@@ -29,7 +29,7 @@ func TestWAFComponentNextID(t *testing.T) {
 	}
 }
 
-func TestWAFComponent(t *testing.T) {
+func TestWAFShape(t *testing.T) {
 	g := dot.NewGraph(dot.Directed)
 
 	sketcher := waf{}

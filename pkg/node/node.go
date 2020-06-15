@@ -41,23 +41,19 @@ func Rounded(rounded bool) Attribute {
 }
 
 // FillColor sets the node fill color.
-func FillColor(color, fallback string) Attribute {
+func FillColor(color string) Attribute {
 	return func(el *dot.Node) {
 		if strings.TrimSpace(color) != "" {
 			el.Attr("fillcolor", color)
-		} else {
-			el.Attr("fillcolor", fallback)
 		}
 	}
 }
 
 // FontColor specify the text color.
-func FontColor(color, fallback string) Attribute {
+func FontColor(color string) Attribute {
 	return func(el *dot.Node) {
 		if strings.TrimSpace(color) != "" {
 			el.Attr("fontcolor", color)
-		} else {
-			el.Attr("fontcolor", fallback)
 		}
 	}
 }

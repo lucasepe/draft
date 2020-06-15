@@ -15,7 +15,7 @@ type cdn struct {
 
 func (rcv *cdn) nextID() string {
 	rcv.seq++
-	return fmt.Sprintf("cn%d", rcv.seq)
+	return fmt.Sprintf("cdn%d", rcv.seq)
 }
 
 func (rcv *cdn) sketch(graph *dot.Graph, comp Component) {
@@ -25,12 +25,14 @@ func (rcv *cdn) sketch(graph *dot.Graph, comp Component) {
 	}
 
 	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
+	guessImpl(&comp, cl)
 
 	el := node.New(cl, id,
-		node.Label("CDN", false),
-		node.FontColor(comp.FontColor, "#000000ff"),
-		node.FillColor(comp.FillColor, "#47df9aff"),
+		node.Label("<b>CDN</b>", true),
+		node.FontColor("#000000ff"),
+		node.FillColor("#47df9aff"),
 		node.Shape("Mcircle"),
 	)
 	el.Attr("height", "0.5")
+	el.Attr("color", "#f5f5f5ff")
 }

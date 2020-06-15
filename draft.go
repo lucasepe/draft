@@ -13,34 +13,36 @@ import (
 )
 
 const (
-	kindHTML             = "html"
-	kindClient           = "client"
-	kindGateway          = "gateway"
-	kindService          = "service"
-	kindQueue            = "queue"
-	kindBroker           = "broker"
-	kindStorage          = "storage"
-	kindDatabase         = "database"
-	kindFunction         = "function"
-	kindBalancer         = "balancer"
-	kindCDN              = "cdn"
-	kindDNS              = "dns"
-	kindFirewall         = "waf"
-	kindContainerService = "cos"
+	kindHTML              = "html"
+	kindClient            = "cli"
+	kindGateway           = "gtw"
+	kindService           = "ser"
+	kindQueue             = "que"
+	kindPubSub            = "msg"
+	kindObjectStore       = "ost"
+	kindRDB               = "rdb"
+	kindNoSQL             = "doc"
+	kindFunction          = "fun"
+	kindLBA               = "lba"
+	kindCDN               = "cdn"
+	kindDNS               = "dns"
+	kindFirewall          = "waf"
+	kindContainersManager = "kub"
+	kindBlockStore        = "bst"
+	kindCache             = "mem"
+	kindFileStore         = "fst"
 )
 
 // Connection is a link between two components.
 type Connection struct {
-	Origin struct {
-		ComponentID string `yaml:"componentId"`
-	} `yaml:"origin"`
+	Origin  string `yaml:"origin"`
 	Targets []struct {
-		ComponentID string `yaml:"componentId"`
-		Label       string `yaml:"label,omitempty"`
-		Color       string `yaml:"color,omitempty"`
-		Dashed      bool   `yaml:"dashed,omitempty"`
-		Dir         string `yaml:"dir,omitempty"`
-		Highlight   bool   `yaml:"highlight,omitempty"`
+		ID        string `yaml:"id"`
+		Label     string `yaml:"label,omitempty"`
+		Color     string `yaml:"color,omitempty"`
+		Dashed    bool   `yaml:"dashed,omitempty"`
+		Dir       string `yaml:"dir,omitempty"`
+		Highlight bool   `yaml:"highlight,omitempty"`
 	} `yaml:"targets"`
 }
 
@@ -50,12 +52,13 @@ type Component struct {
 	Kind      string `yaml:"kind"`
 	Label     string `yaml:"label,omitempty"`
 	Impl      string `yaml:"impl,omitempty"`
-	Provider  string `yaml:"provider,omitempty"`
+	Outline   string `yaml:"outline,omitempty"`
 	FillColor string `yaml:"fillColor,omitempty"`
 	FontColor string `yaml:"fontColor,omitempty"`
 	Rounded   bool   `yaml:"rounded,omitempty"`
 
 	bottomTop bool
+	provider  string
 }
 
 // Draft represents a whole diagram.
@@ -75,6 +78,7 @@ type Draft struct {
 
 	bottomTop bool
 	ortho     bool
+	provider  string
 }
 
 // BottomTop return true if this component
@@ -89,20 +93,24 @@ func NewDraft(r io.Reader) (*Draft, error) {
 		sketchers: map[string]interface {
 			sketch(*dot.Graph, Component)
 		}{
-			kindHTML:             &html{},
-			kindClient:           &client{},
-			kindGateway:          &gateway{},
-			kindService:          &service{},
-			kindBroker:           &broker{},
-			kindQueue:            &queue{},
-			kindFunction:         &function{},
-			kindStorage:          &storage{},
-			kindDatabase:         &database{},
-			kindBalancer:         &balancer{},
-			kindCDN:              &cdn{},
-			kindDNS:              &dns{},
-			kindFirewall:         &waf{},
-			kindContainerService: &containerService{},
+			kindHTML:              &html{},
+			kindClient:            &cli{},
+			kindGateway:           &gtw{},
+			kindService:           &ser{},
+			kindPubSub:            &msg{},
+			kindQueue:             &que{},
+			kindFunction:          &fun{},
+			kindRDB:               &rdb{},
+			kindLBA:               &lba{},
+			kindBlockStore:        &bst{},
+			kindCDN:               &cdn{},
+			kindDNS:               &dns{},
+			kindFirewall:          &waf{},
+			kindContainersManager: &kub{},
+			kindCache:             &mem{},
+			kindNoSQL:             &doc{},
+			kindObjectStore:       &ost{},
+			kindFileStore:         &fst{},
 		},
 	}
 
@@ -125,6 +133,11 @@ func (ark *Draft) BottomTop(val bool) {
 // Ortho if true edges are drawn as line segments
 func (ark *Draft) Ortho(val bool) {
 	ark.ortho = val
+}
+
+// Provider sets the Cloud Provider name (one of: aws, gcp, azure).
+func (ark *Draft) Provider(name string) {
+	ark.provider = name
 }
 
 // Sketch generates the GraphViz definition for this architecture diagram.
@@ -150,6 +163,7 @@ func (ark *Draft) Sketch() (string, error) {
 func sketchComponents(graph *dot.Graph, draft *Draft) error {
 	for _, el := range draft.Components {
 		el.bottomTop = draft.bottomTop
+		el.provider = draft.provider
 
 		sketcher, ok := draft.sketchers[el.Kind]
 		if !ok {
@@ -157,8 +171,8 @@ func sketchComponents(graph *dot.Graph, draft *Draft) error {
 		}
 
 		parent := graph
-		if strings.TrimSpace(el.Provider) != "" {
-			parent = cluster.New(graph, el.Provider,
+		if strings.TrimSpace(el.Outline) != "" {
+			parent = cluster.New(graph, el.Outline,
 				cluster.PenColor("#d9cc31"),
 				cluster.FontName("Fira Mono"),
 				cluster.FontSize(10),
@@ -173,10 +187,9 @@ func sketchComponents(graph *dot.Graph, draft *Draft) error {
 
 func sketchConnections(graph *dot.Graph, draft *Draft) error {
 	for _, el := range draft.Connections {
-		var from = el.Origin.ComponentID
 
 		for _, x := range el.Targets {
-			err := edge.New(graph, from, x.ComponentID,
+			err := edge.New(graph, el.Origin, x.ID,
 				edge.Label(x.Label),
 				edge.Dir(x.Dir),
 				edge.Color(x.Color),

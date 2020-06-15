@@ -2,7 +2,7 @@ title: System View - Token Manager
 backgroundColor: '#ffffff'
 components:
   -
-    kind: client
+    kind: cli
     impl: SPA / iOS / Android
     label: Client App
   -
@@ -14,50 +14,48 @@ components:
     impl: AWS Cloudfront
     provider: AWS
   -
-    kind: gateway
+    kind: gtw
     impl: API Gateway
     provider: AWS
   -
-    kind: balancer
+    kind: lba
     impl: AWS NLB
     provider: AWS
   -
-    kind: function
+    kind: fun
     label: Verify JWT
     impl: AWS Lambda
     provider: AWS
   -
-    kind: function
+    kind: fun
     label: Verify OTP
     impl: AWS Lambda
     provider: AWS
   -
-    kind: cos
+    kind: kub
     impl: AWS ECS
     provider: AWS
   -
-    kind: service
+    kind: ser
     label: Token Manager
     impl: AWS EC2
     provider: AWS
   -
-    kind: database
+    kind: mem
     label: Redis
     impl: Amazon ElastiCache
     provider: AWS
     fillColor: '#d82a0b'
     fontColor: '#ffffff'
   -
-    kind: storage
-    label: |
-      Object
-      Store
+    kind: ost
+    label: Bucket
     impl: AWS S3
     provider: AWS
     fillColor: '#571307'
     fontColor: '#ffffff'
   -
-    kind: database
+    kind: rdb
     label: MySQL
     impl: Amazon RDS
     provider: AWS
@@ -65,59 +63,52 @@ components:
     fontColor: '#ffffff'
 connections:
   -
-    origin:
-      componentId: cl1
+    origin: cli1
     targets:
       -
-        componentId: waf1
+        id: waf1
   -
-    origin:
-      componentId: waf1
+    origin: waf1
     targets:
       -
-        componentId: cn1
+        id: cdn1
   -
-    origin:
-      componentId: cn1
+    origin: cdn1
     targets:
       -
-        componentId: gt1
+        id: gtw1
   -
-    origin:
-      componentId: gt1
+    origin: gtw1
     targets:
       -
-        componentId: lb1
+        id: lba1
       -
-        componentId: fn1
+        id: fun1
       -
-        componentId: fn2
+        id: fun2
   -
-    origin:
-      componentId: lb1
+    origin: lba1
     targets:
       -
-        componentId: cos1
+        id: kub1
   -
-    origin:
-      componentId: cos1
+    origin: kub1
     targets:
       -
-        componentId: ms1
+        id: ser1
   -
-    origin:
-      componentId: ms1
+    origin: ser1
     targets:
       -
-        componentId: db1
+        id: mem1
       -
-        componentId: st1
+        id: ost1
       -
-        componentId: db2
+        id: rdb1
 ranks:
   -
     name: rank1
     components:
-      - gt1
-      - lb1
-      - cos1
+      - gtw1
+      - lba1
+      - kub1

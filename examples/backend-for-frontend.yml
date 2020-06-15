@@ -2,82 +2,76 @@ title: Backend For Frontend (BFF)
 backgroundColor: '#ffffff'
 components:
   -
-    kind: client
+    kind: cli
     label: Web App
-    fillColor: '#ee82ee'
   -
-    kind: client
+    kind: cli
     label: Mobile App
-    fillColor: '#708090'
   -
-    kind: gateway
+    kind: gtw
     impl: |
       Web BFF
       API Gateway
   -
-    kind: gateway
+    kind: gtw
     impl: |
       Mobile BFF
       API Gateway
   -
-    kind: service
+    kind: ser
     label: μService A
     fillColor: '#b0e0e6'
   -
-    kind: service
+    kind: ser
     label: μService B
   -
-    kind: service
+    kind: ser
     label: μService C
     fillColor: '#00ff7f'
   -
-    kind: service
+    kind: ser
     label: μService D
     fillColor: '#00007f'
     fontColor: '#fafafa'
 connections:
   - 
-    origin:
-      componentId: cl1
+    origin: cli1
     targets:
       -
-        componentId: gt1
+        id: gtw1
         color: '#ee82ee'
   - 
-    origin:
-      componentId: cl2
+    origin: cli2
     targets:
       -
-        componentId: gt2
+        id: gtw2
   -
-    origin: 
-      componentId: gt1
+    origin: gtw1
     targets:
       -
-        componentId: ms1
+        id: ser1
         color: '#ee82ee'
       -
-        componentId: ms2
+        id: ser2
         color: '#ee82ee'
       -
-        componentId: ms3
+        id: ser3
         color: '#ee82ee'
       -
-        componentId: ms4
+        id: ser4
         color: '#ee82ee'
   -
-    origin: 
-      componentId: gt2
+    origin: gtw2
     targets:
       -
-        componentId: ms1
+        id: ser1
         highlight: true
       -
-        componentId: ms2
+        id: ser2
         highlight: true
       -
-        componentId: ms3
+        id: ser3
         highlight: true
       -
-        componentId: ms4
+        id: ser4
         highlight: true

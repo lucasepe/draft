@@ -2,51 +2,38 @@ title: message bus pattern
 backgroundColor: '#ffffff'
 components:
   - 
-    kind: service
+    kind: ser
     label: Producer
+    fillColor: '#4e8393'
   -
-    kind: broker
-    label: "Notification\nService"
+    kind: msg
+    label: |
+      Notification
+      Service
   -
-    kind: queue
-    label: "event queue @ topic 1"
+    kind: ser
+    label: |
+      Subscriber
+      @ topic 1
+    fillColor: '#b8422d'
   -
-    kind: queue
-    label: "event queue @ topic 2"
-  -
-    kind: service
-    label: "Consumer\n@ topic 1"
-  -
-    kind: service
-    label: "Consumer\n@ topic 2"
+    kind: ser
+    label: |
+      Subscriber
+      @ topic 2
+    fillColor: '#53934e'
 connections:
   -
-    origin: 
-      componentId: ms1
+    origin: ser1
     targets:
       -
-        componentId: br1
+        id: msg1
   -
-    origin:
-      componentId: br1
+    origin: msg1
     targets:
       -
-        componentId: qs1
+        id: ser2
         dashed: true
       -
-        componentId: qs2
+        id: ser3
         dashed: true
-  -
-    origin:
-      componentId: qs1
-    targets:
-      -
-        componentId: ms2
-        dir: back
-  -
-    origin: 
-      componentId: qs2
-    targets:
-      -
-        componentId: ms3
-        dir: back

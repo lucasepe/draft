@@ -28,7 +28,7 @@ func TestDNSComponentNextID(t *testing.T) {
 }
 
 func TestDNSComponent(t *testing.T) {
-	want := `label="DNS",shape="Msquare",style="filled"`
+	want := `label=<<b>DNS</b>>,shape="Msquare",style="filled"`
 	g := dot.NewGraph(dot.Directed)
 
 	sketcher := dns{}

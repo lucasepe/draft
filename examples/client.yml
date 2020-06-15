@@ -1,6 +1,0 @@
---- 
-components: 
-  - 
-    kind: client
-    label: "Web App"
-    fillColor: '#ee82ee'

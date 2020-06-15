@@ -21,7 +21,7 @@ ______                __  _
 | | | | _ __   __ _ | |_ | |_       
 | | | || '__| / _' ||  _|| __|      https://github.com/lucasepe/draft
 | |/ / | |   | (_| || |  | |_ 
-|___/  |_|    \__,_||_|   \__|                {{VERSION}}`
+|___/  |_|    \__,_||_|   \__|               v{{VERSION}}`
 )
 
 var (
@@ -31,6 +31,7 @@ var (
 
 	flagBottomTop bool
 	flagOrtho     bool
+	flagImpl      string
 )
 
 func main() {
@@ -42,29 +43,30 @@ func main() {
 	}
 
 	fn, err := filepath.Abs(flag.Args()[0])
-	handleErr(err)
+	handleErr(err, fn)
 
 	file, err := os.Open(fn)
-	handleErr(err)
+	handleErr(err, fn)
 
 	defer file.Close()
 
 	ark, err := draft.NewDraft(file)
-	handleErr(err)
+	handleErr(err, fn)
 
 	ark.BottomTop(flagBottomTop)
 	ark.Ortho(flagOrtho)
+	ark.Provider(flagImpl)
 
 	str, err := ark.Sketch()
-	handleErr(err)
+	handleErr(err, fn)
 
 	fmt.Println(str)
 }
 
 // handleErr check for an error and eventually exit
-func handleErr(err error) {
+func handleErr(err error, src string) {
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "error: %s @ %s\n", err.Error(), src)
 		os.Exit(1)
 	}
 }
@@ -95,6 +97,7 @@ func configureFlags() {
 
 	flag.CommandLine.BoolVar(&flagBottomTop, "bottom-top", false, "if true sets layout dir as bottom top")
 	flag.CommandLine.BoolVar(&flagOrtho, "ortho", false, "if true edges are drawn as line segments")
+	flag.CommandLine.StringVar(&flagImpl, "impl", "", "auto fill the specific provider services (aws, gcp or azure)")
 
 	flag.CommandLine.Parse(os.Args[1:])
 }

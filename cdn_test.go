@@ -6,14 +6,14 @@ import (
 	"github.com/emicklei/dot"
 )
 
-func TestCDNComponentNextID(t *testing.T) {
+func TestCDNCNextID(t *testing.T) {
 	tests := []struct {
 		want string
 	}{
-		{"cn1"},
-		{"cn2"},
-		{"cn3"},
-		{"cn4"},
+		{"cdn1"},
+		{"cdn2"},
+		{"cdn3"},
+		{"cdn4"},
 	}
 
 	s := cdn{}
@@ -27,8 +27,8 @@ func TestCDNComponentNextID(t *testing.T) {
 	}
 }
 
-func TestCDNComponent(t *testing.T) {
-	want := `label="CDN",shape="Mcircle",style="filled"`
+func TestCDNShape(t *testing.T) {
+	want := `shape="Mcircle",style="filled"`
 	g := dot.NewGraph(dot.Directed)
 
 	sketcher := cdn{}

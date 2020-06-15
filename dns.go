@@ -26,12 +26,14 @@ func (rcv *dns) sketch(graph *dot.Graph, comp Component) {
 	}
 
 	cl := cluster.New(graph, id, cluster.BottomTop(rcv.bottomTop), cluster.Label(comp.Impl))
+	guessImpl(&comp, cl)
 
 	el := node.New(cl, id,
-		node.Label("DNS", false),
-		node.FontColor(comp.FontColor, "#000000ff"),
-		node.FillColor(comp.FillColor, "#854eadff"),
+		node.Label("<b>DNS</b>", true),
+		node.FontColor("#f5f5f5ff"),
+		node.FillColor("#854eadff"),
 		node.Shape("Msquare"),
 	)
 	el.Attr("height", "0.3")
+	el.Attr("color", "#f5f5f5ff")
 }

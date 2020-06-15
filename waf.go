@@ -25,11 +25,12 @@ func (rcv *waf) sketch(graph *dot.Graph, comp Component) {
 	}
 
 	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
+	guessImpl(&comp, cl)
 
 	el := node.New(cl, id,
-		node.Label("FW", false),
-		node.FontColor(comp.FontColor, "#fafafaff"),
-		node.FillColor(comp.FillColor, "#f3190b"),
+		node.Label("<b>WAF</b>", true),
+		node.FontColor("#fafafaff"),
+		node.FillColor("#f3190b"),
 		node.Shape("invhouse"),
 	)
 	el.Attr("width", "0.3")

@@ -17,19 +17,9 @@ func TestDefaultAttributes(t *testing.T) {
 	}
 }
 
-func TestFontColorFallback(t *testing.T) {
-	di := dot.NewGraph(dot.Directed)
-	New(di, "NODE_1", FontColor("", "#000000ff"))
-
-	want := `digraph  {n1[fontcolor="#000000ff",fontname="Fira Mono",fontsize="9.00",label="NODE_1",style="filled"];}`
-	if got := flatten(di.String()); got != want {
-		t.Errorf("got [%v] want [%v]", got, want)
-	}
-}
-
 func TestFontColor(t *testing.T) {
 	di := dot.NewGraph(dot.Directed)
-	New(di, "NODE_1", FontColor("#fafafaff", "#000000"))
+	New(di, "NODE_1", FontColor("#fafafaff"))
 
 	want := `digraph  {n1[fontcolor="#fafafaff",fontname="Fira Mono",fontsize="9.00",label="NODE_1",style="filled"];}`
 	if got := flatten(di.String()); got != want {
@@ -37,9 +27,9 @@ func TestFontColor(t *testing.T) {
 	}
 }
 
-func TestFillColorFallback(t *testing.T) {
+func TestFillColor(t *testing.T) {
 	di := dot.NewGraph(dot.Directed)
-	New(di, "NODE_1", FillColor("", "#ff0000ff"))
+	New(di, "NODE_1", FillColor("#ff0000ff"))
 
 	want := `digraph  {n1[fillcolor="#ff0000ff",fontname="Fira Mono",fontsize="9.00",label="NODE_1",style="filled"];}`
 	if got := flatten(di.String()); got != want {
