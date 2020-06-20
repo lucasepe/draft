@@ -66,7 +66,7 @@ func TestCacheFigure(t *testing.T) {
 		find string
 		want bool
 	}{
-		{kindCache, `label=<<table border="0" cellspacing="1" cellpadding="4"><tr><td border="0" colspan="2">&nbsp;</td></tr><tr>  <td bgcolor="#f04d30ff"><font color="#f5f5f5" point-size="7">key</font></td>  <td bgcolor="#f04d30ff"><font color="#f5f5f5" point-size="7">val</font></td></tr><tr>  <td bgcolor="#f04d30ff" style="dashed"></td>  <td bgcolor="#f04d30ff" style="dashed"></td></tr><tr>  <td bgcolor="#f04d30ff" style="dashed"></td>  <td bgcolor="#f04d30ff" style="dashed"></td></tr><tr>  <td colspan="2">&nbsp;</td>    </tr></table>>`, true},
+		{kindCache, `label=<<table border="0" cellspacing="1" cellpadding="4"><tr><td border="0" colspan="2">&nbsp;</td></tr><tr>  <td bgcolor="#f04d30ff"><font color="#f5f5f5" point-size="7">key</font></td>  <td bgcolor="#f04d30ff"><font color="#f5f5f5" point-size="7">val</font></td></tr><tr>  <td bgcolor="#f04d30ff" style="dashed"></td>  <td bgcolor="#f04d30ff" style="dashed"></td></tr><tr>  <td bgcolor="#f04d30ff" style="dashed"></td>  <td bgcolor="#f04d30ff" style="dashed"></td></tr><tr>  <td colspan="2">Cache</td>    </tr></table>>`, true},
 	}
 
 	gfx := dot.NewGraph(dot.Directed)

@@ -51,7 +51,7 @@ func TestSketchComponents(t *testing.T) {
 	want := `digraph  {
 		subgraph cluster_s5 {
 			fontname="Fira Mono Bold";fontsize="9.00";label="";labelloc="t";pencolor="transparent";
-			n6[fillcolor="#d1c8d4ff",fontcolor="#000000ff",fontname="Fira Mono",fontsize="9.00",height="0.5",label="",shape="note",style="filled"];
+			n6[fillcolor="#d1c8d4ff",fontcolor="#000000ff",fontname="Fira Mono",fontsize="9.00",height="0.5",label="NoSQL",shape="note",style="filled"];
 		}
 		subgraph cluster_s3 {
 			fontname="Fira Mono Bold";fontsize="9.00";label="";labelloc="t";pencolor="transparent";
