@@ -1,19 +1,17 @@
 package draft
 
 import (
+	"encoding/json"
 	"fmt"
-	"io"
+	"os"
 	"strings"
 
 	"github.com/emicklei/dot"
-	"github.com/lucasepe/draft/pkg/cluster"
 	"github.com/lucasepe/draft/pkg/edge"
 	"github.com/lucasepe/draft/pkg/graph"
-	"gopkg.in/yaml.v2"
 )
 
 const (
-	kindHTML              = "html"
 	kindClient            = "cli"
 	kindGateway           = "gtw"
 	kindService           = "ser"
@@ -55,141 +53,116 @@ type Component struct {
 	Outline   string `yaml:"outline,omitempty"`
 	FillColor string `yaml:"fillColor,omitempty"`
 	FontColor string `yaml:"fontColor,omitempty"`
-	Rounded   bool   `yaml:"rounded,omitempty"`
-
-	bottomTop bool
-	provider  string
 }
 
-// Draft represents a whole diagram.
-type Draft struct {
+// Design represents a whole diagram.
+type Design struct {
 	Title           string       `yaml:"title,omitempty"`
 	BackgroundColor string       `yaml:"backgroundColor,omitempty"`
 	Components      []Component  `yaml:"components"`
 	Connections     []Connection `yaml:"connections,omitempty"`
-	Ranks           []struct {
-		Name       string   `yaml:"name"`
-		Components []string `yaml:"components"`
-	} `yaml:"ranks,omitempty"`
-
-	sketchers map[string]interface {
-		sketch(*dot.Graph, Component)
-	}
-
-	bottomTop bool
-	ortho     bool
-	provider  string
+	Ranks           []Rank       `yaml:"ranks,omitempty"`
 }
 
-// BottomTop return true if this component
-// must be sketched in a bottom top layout
-func (co *Component) BottomTop() bool {
-	return co.bottomTop
-}
-
-// NewDraft returns a new decoded Draft struct
-func NewDraft(r io.Reader) (*Draft, error) {
-	res := &Draft{
-		sketchers: map[string]interface {
-			sketch(*dot.Graph, Component)
-		}{
-			kindHTML:              &html{},
-			kindClient:            &cli{},
-			kindGateway:           &gtw{},
-			kindService:           &ser{},
-			kindPubSub:            &msg{},
-			kindQueue:             &que{},
-			kindFunction:          &fun{},
-			kindRDB:               &rdb{},
-			kindLBA:               &lba{},
-			kindBlockStore:        &bst{},
-			kindCDN:               &cdn{},
-			kindDNS:               &dns{},
-			kindFirewall:          &waf{},
-			kindContainersManager: &kub{},
-			kindCache:             &mem{},
-			kindNoSQL:             &doc{},
-			kindObjectStore:       &ost{},
-			kindFileStore:         &fst{},
-		},
-	}
-
-	// Init new YAML decode
-	d := yaml.NewDecoder(r)
-
-	// Start YAML decoding from file
-	if err := d.Decode(&res); err != nil {
-		return nil, err
-	}
-
-	return res, nil
-}
-
-// BottomTop enable the bottom top layout
-func (ark *Draft) BottomTop(val bool) {
-	ark.bottomTop = val
-}
-
-// Ortho if true edges are drawn as line segments
-func (ark *Draft) Ortho(val bool) {
-	ark.ortho = val
-}
-
-// Provider sets the Cloud Provider name (one of: aws, gcp, azure).
-func (ark *Draft) Provider(name string) {
-	ark.provider = name
+// Rank define the nodes laying on the same level.
+type Rank struct {
+	Name       string   `yaml:"name"`
+	Components []string `yaml:"components"`
 }
 
 // Sketch generates the GraphViz definition for this architecture diagram.
-func (ark *Draft) Sketch() (string, error) {
-	g := graph.New(graph.BackgroundColor(ark.BackgroundColor),
-		graph.Ortho(ark.ortho),
-		graph.BottomTop(ark.bottomTop),
-		graph.Label(ark.Title))
-
-	if err := sketchComponents(g, ark); err != nil {
+func Sketch(cfg Config) (string, error) {
+	prj, err := Load(cfg)
+	if err != nil {
 		return "", err
 	}
 
-	if err := sketchConnections(g, ark); err != nil {
+	if cfg.verbose {
+		fmt.Fprintf(os.Stderr, "elaborating draft architecture definition: %s\n", cfg.uri)
+	}
+
+	gfx := graph.New(graph.BackgroundColor(prj.BackgroundColor),
+		//graph.Ortho(ark.ortho),
+		graph.BottomTop(cfg.bottomTop),
+		graph.Label(prj.Title))
+
+	if err := sketchComponents(gfx, cfg, prj.Components); err != nil {
 		return "", err
 	}
 
-	sketchSameRanks(g, ark)
+	if err := sketchConnections(gfx, cfg, prj.Connections); err != nil {
+		return "", err
+	}
 
-	return g.String(), nil
+	sketchSameRanks(gfx, cfg, prj.Ranks)
+
+	return gfx.String(), nil
 }
 
-func sketchComponents(graph *dot.Graph, draft *Draft) error {
-	for _, el := range draft.Components {
-		el.bottomTop = draft.bottomTop
-		el.provider = draft.provider
+// fig is a function that render a Component according the Config.
+type fig func(ctx Config, com Component) func(dia *dot.Graph) bool
 
-		sketcher, ok := draft.sketchers[el.Kind]
-		if !ok {
-			return fmt.Errorf("render not found for component of kind '%s'", el.Kind)
+var (
+	// figRegistry keeps tracks of all 'figure' functions.
+	figRegistry = make(map[string]fig)
+)
+
+// register a 'figure' function to the global registry.
+func register(kind string, fig fig) {
+	if _, ok := figRegistry[kind]; !ok {
+		figRegistry[kind] = fig
+	}
+}
+
+// idAutoGen auto generate a component id.
+func idAutoGen() func(comp *Component) {
+	counters := make(map[string]int16)
+
+	return func(comp *Component) {
+		if strings.TrimSpace(comp.ID) == "" {
+			key := comp.Kind
+			counters[key]++
+			comp.ID = fmt.Sprintf("%s%d", key, counters[key])
+		}
+	}
+}
+
+// sketchComponents draws all components.
+func sketchComponents(gfx *dot.Graph, cfg Config, items []Component) error {
+	genID := idAutoGen()
+	getImpl := guessImplByProvider(cfg.provider)
+
+	for _, it := range items {
+		genID(&it)
+		getImpl(&it)
+
+		if cfg.verbose {
+			bin, _ := json.Marshal(it)
+			fmt.Fprintf(os.Stderr, "  • component: %s\n", string(bin))
 		}
 
-		parent := graph
-		if strings.TrimSpace(el.Outline) != "" {
-			parent = cluster.New(graph, el.Outline,
-				cluster.PenColor("#d9cc31"),
-				cluster.FontName("Fira Mono"),
-				cluster.FontSize(10),
-				cluster.FontColor("#63625b"))
+		if ok := figIcon(cfg, it)(gfx); !ok {
+			if fig, found := figRegistry[it.Kind]; found {
+				fig(cfg, it)(gfx)
+			} else {
+				return fmt.Errorf("sketcher not found for component of kind <%s>", it.Kind)
+			}
 		}
-
-		sketcher.sketch(parent, el)
 	}
 
 	return nil
 }
 
-func sketchConnections(graph *dot.Graph, draft *Draft) error {
-	for _, el := range draft.Connections {
+// sketchConnections draws connections
+func sketchConnections(gfx *dot.Graph, ctx Config, items []Connection) error {
+	for _, el := range items {
 
 		for _, x := range el.Targets {
-			err := edge.New(graph, el.Origin, x.ID,
+			if ctx.verbose {
+				fmt.Fprintf(os.Stderr, "  • connection: <%s> to <%s>\n", el.Origin, x.ID)
+			}
+
+			err := edge.New(gfx, el.Origin, x.ID,
 				edge.Label(x.Label),
 				edge.Dir(x.Dir),
 				edge.Color(x.Color),
@@ -205,14 +178,25 @@ func sketchConnections(graph *dot.Graph, draft *Draft) error {
 	return nil
 }
 
-func sketchSameRanks(graph *dot.Graph, draft *Draft) {
-	for _, grp := range draft.Ranks {
+// sketchSameRanks groups component belonging to the same rank.
+func sketchSameRanks(gfx *dot.Graph, ctx Config, items []Rank) {
+	for _, grp := range items {
 		if name := strings.TrimSpace(grp.Name); len(name) > 0 {
 			for _, el := range grp.Components {
-				if n, ok := graph.FindNodeById(el); ok {
-					graph.AddToSameRank(name, n)
+				if n, ok := gfx.FindNodeById(el); ok {
+					gfx.AddToSameRank(name, n)
 				}
 			}
 		}
 	}
+}
+
+// fileExists checks if a file exists and is not a directory before we
+// try using it to prevent further errors.
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

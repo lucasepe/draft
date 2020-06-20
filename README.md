@@ -1,6 +1,6 @@
 # Draft
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; ![Go Coverage](https://img.shields.io/badge/go%20coverage-74%25-brightgreen.svg?longCache=true&style=flat) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; ![Go Coverage](https://img.shields.io/badge/go%20coverage-82%2E8%25-brightgreen.svg?longCache=true&style=flat) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
 
 A commandline tool that generate **H**igh **L**evel microservice & serverless **A**rchitecture diagrams using a declarative syntax defined in a YAML file.
 
@@ -10,7 +10,18 @@ A commandline tool that generate **H**igh **L**evel microservice & serverless **
 - Input data in flat YAML text files
 - Usable with shell scripts
 
-## How `draft` works?
+# Why?
+
+I prefer to think in terms of capabilities rather than specific vendor services.
+
+- _"do we need a DNS?"_ instead of _"do we need Route 53?"_
+- _"do we need a CDN?"_ instead of _"do we need Cloudfront?"_
+- _"do we need a database? if yes? what type? Relational? No SQL"_ instead of "do we need Google Cloud Datastore?"_
+- _"do we need some serverless function?"_ instead of _"do we need an Azure Function"_
+
+...and so on.
+
+# How `draft` works?
 
 `draft` takes in input a declarative YAML file and generates a [`dot`](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) script for [Graphviz](https://www.graphviz.org/)
 
@@ -31,7 +42,8 @@ Piping the `draft` output to [GraphViz](http://www.graphviz.org/doc/info/output.
 
 To install GraphViz to your favorite OS, please, follow this link [https://graphviz.gitlab.io/download/](https://graphviz.gitlab.io/download/).
 
-## Components
+
+# Components
 
 > a picture is worth a thousand words 
 
@@ -48,7 +60,6 @@ type Component struct {
   Impl      string `yaml:"impl,omitempty"`      // optional - you can use this to specify the implementation
   FillColor string `yaml:"fillColor,omitempty"` // optional - the hex code for the background color 
   FontColor string `yaml:"fontColor,omitempty"` // optional - the hex code for the foreground color
-  Rounded   bool   `yaml:"rounded,omitempty"`   // optional - set to true if you wants rounded shapes
 }
 ```
 
@@ -84,7 +95,7 @@ Below is a list of all the components currently implemented.
 
 ## Auto filling the component implementation
 
-Leave the `impl` fields empty and run [draft](https://github.com/lucasepe/draft/releases/latest) with the `-impl` flag to let [draft](https://github.com/lucasepe/draft/releases/latest) found the implementation by provider.
+In your YAML file, leave the `impl` fields empty and run [draft](https://github.com/lucasepe/draft/releases/latest) with the `-impl` flag to let [draft](https://github.com/lucasepe/draft/releases/latest) found the implementation by provider.
 
 | example command                                                               | output                         |
 |:------------------------------------------------------------------------------|:------------------------------:|
@@ -95,19 +106,37 @@ Leave the `impl` fields empty and run [draft](https://github.com/lucasepe/draft/
 
 ... and so on for each kind of component!
 
+To render components with specific icons read below.
+
+
+## Rendering components with specific cloud provider icons
+
+1. Download the <u>PNG</u> icons of your cloud provider [AWS](https://aws.amazon.com/it/architecture/icons/), [GCP](https://cloud.google.com/icons), [Azure](https://www.microsoft.com/en-us/download/details.aspx?id=41937)
+
+2. Take only the icons related to the components supported by [draft](https://github.com/lucasepe/draft/releases/latest)
+
+3. Make a directory with the provider name (i.e. `/draft/icons/aws`, `/draft/icons/gcp`, `/draft/icons/azure`) 
+
+4. Rename each icon as [draft](https://github.com/lucasepe/draft/releases/latest) components `kind` (i.e. `dns.png`, `cdn.png` and so on...)
+
+5. Run [draft](https://github.com/lucasepe/draft/releases/latest) specifyng the `-impl` and the icons folder using the environment variable `DRAFT_ICONS_PATH`
+  - example: `DRAFT_ICONS_PATH=/draft/icons draft -impl aws my-file.yml | dot > ark-aws.png`
+
+👉 I have already done all the work for points 1 to 4. So you can avoid it by copying the directory [icons](./icons) 👈
+
 ### Notes about a component `id`
 
 - you can define your component `id` explicitly (i.e. _id: MY_SERVICE_A_)
 - or you can omit the component `id` attribute and it will be autogenerated
 
-#### How is auto-generated a component `id`?
+### How is auto-generated a component `id`?
 
 An auto-generated component `id` has a prefix and a sequential number
 
 - the prefix is related to the component `kind`
   - examples _waf1, ..., wafN_ or _ser1, ..., serN_ etc.
 
-## Connections
+# Connections
 
 You can connect each component by arrows.
 

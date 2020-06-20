@@ -3,47 +3,44 @@ package draft
 import (
 	"fmt"
 	"os"
-	"path"
-	"strings"
+	"path/filepath"
 
 	"github.com/emicklei/dot"
 	"github.com/lucasepe/draft/pkg/cluster"
 	"github.com/lucasepe/draft/pkg/node"
 )
 
-type icon struct {
-	seq int16
-}
-
-func (rcv *icon) nextID() string {
-	rcv.seq++
-	return fmt.Sprintf("ico%d", rcv.seq)
-}
-
-func (rcv *icon) sketch(graph *dot.Graph, comp Component) {
-	if strings.TrimSpace(comp.Label) == "" {
-		return
-	}
-
-	id := comp.ID
-	if strings.TrimSpace(comp.ID) == "" {
-		id = rcv.nextID()
-	}
-
+// figIcon render a Component using the cloud provider icon.
+func figIcon(ctx Config, com Component) func(gfx *dot.Graph) bool {
 	iconsPath := os.Getenv("DRAFT_ICONS_PATH")
-	img := path.Join(iconsPath, comp.Label)
 
-	label := fmt.Sprintf(`<table border="0" cellborder="0">
-	<tr>
-	  <td><img src="%s"/></td>
-	</tr>
-	</table>`, img)
+	return func(gfx *dot.Graph) bool {
+		if len(ctx.provider) == 0 {
+			return false
+		}
 
-	cl := cluster.New(graph, id, cluster.BottomTop(comp.BottomTop()), cluster.Label(comp.Impl))
+		img := filepath.Join(iconsPath, ctx.provider, fmt.Sprintf("%s.png", com.Kind))
+		if !fileExists(img) {
+			if ctx.verbose {
+				fmt.Fprintf(os.Stderr, "  ! file '%s' not found\n", img)
+			}
+			return false
+		}
 
-	node.New(cl, id,
-		node.Label(label, true),
-		node.FillColor("transparent"),
-		node.Shape("plain"),
-	)
+		label := fmt.Sprintf(`<table border="0" cellborder="0">
+		<tr>
+		  <td fixedsize="true" width="50" height="50"><img src="%s" /></td>
+		</tr>
+		</table>`, img)
+
+		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
+
+		node.New(cl, com.ID,
+			node.Label(label, true),
+			node.FillColor("transparent"),
+			node.Shape("plain"),
+		)
+
+		return true
+	}
 }

@@ -7,8 +7,10 @@ import (
 	"github.com/emicklei/dot"
 )
 
+// Attribute is a function that apply a property to a cluster.
 type Attribute func(*dot.Graph)
 
+// Label is the cluster caption.
 func Label(label string) Attribute {
 	return func(el *dot.Graph) {
 		el.Attr("label", label)
@@ -19,6 +21,8 @@ func Label(label string) Attribute {
 	}
 }
 
+// PenColor set the color used to draw the
+// bounding box around a cluster.
 func PenColor(color string) Attribute {
 	return func(el *dot.Graph) {
 		if strings.TrimSpace(color) != "" {
@@ -27,6 +31,7 @@ func PenColor(color string) Attribute {
 	}
 }
 
+// FontColor specify the text color.
 func FontColor(color string) Attribute {
 	return func(el *dot.Graph) {
 		if strings.TrimSpace(color) != "" {
@@ -37,12 +42,14 @@ func FontColor(color string) Attribute {
 	}
 }
 
+// FontName specify the font used for text.
 func FontName(name string) Attribute {
 	return func(el *dot.Graph) {
 		el.Attr("fontname", name)
 	}
 }
 
+// FontSize specify the font size, in points, used for text.
 func FontSize(size float32) Attribute {
 	return func(el *dot.Graph) {
 		fs := fmt.Sprintf("%.2f", size)
@@ -50,6 +57,7 @@ func FontSize(size float32) Attribute {
 	}
 }
 
+// BottomTop sets the label location according to layout.
 func BottomTop(bt bool) Attribute {
 	return func(el *dot.Graph) {
 		if bt {
@@ -60,6 +68,7 @@ func BottomTop(bt bool) Attribute {
 	}
 }
 
+// New create a new cluster with the specified attributes.
 func New(parent *dot.Graph, id string, attrs ...Attribute) *dot.Graph {
 	cluster := parent.Subgraph(id, dot.ClusterOption{})
 

@@ -2,9 +2,6 @@ package draft
 
 import (
 	"testing"
-
-	"github.com/lucasepe/draft/pkg/cluster"
-	"github.com/lucasepe/draft/pkg/graph"
 )
 
 func TestCloudImpl(t *testing.T) {
@@ -37,56 +34,54 @@ func TestCloudImpl(t *testing.T) {
 
 func TestGuessImpl(t *testing.T) {
 	tests := []struct {
+		prov string
 		comp Component
 		want string
 	}{
 		{
-			Component{provider: "aws", Kind: "bst"},
+			"aws", Component{Kind: "bst"},
 			"Elastic Block\nStore (EBS)",
 		},
 		{
-			Component{provider: "aws", Kind: "lba"},
+			"aws", Component{Kind: "lba"},
 			"Elastic\nLoad Balancer",
 		},
 		{
-			Component{provider: "aws", Kind: "ost"},
+			"aws", Component{Kind: "ost"},
 			"Simple Storage\nService (S3)",
 		},
 
 		{
-			Component{provider: "gcp", Kind: "kub"},
+			"gcp", Component{Kind: "kub"},
 			"Google Kubernetes\nEngine",
 		},
 		{
-			Component{provider: "gcp", Kind: "mem"},
+			"gcp", Component{Kind: "mem"},
 			"Cloud Memorystore",
 		},
 		{
-			Component{provider: "gcp", Kind: "ost"},
+			"gcp", Component{Kind: "ost"},
 			"Cloud Storage",
 		},
 
 		{
-			Component{provider: "azure", Kind: "dns"},
+			"azure", Component{Kind: "dns"},
 			"Azure DNS",
 		},
 		{
-			Component{provider: "azure", Kind: "mem"},
+			"azure", Component{Kind: "mem"},
 			"Redis Caches",
 		},
 		{
-			Component{provider: "azure", Kind: "waf"},
+			"azure", Component{Kind: "waf"},
 			"Azure Firewall",
 		},
 	}
 
-	gr := graph.New()
-	cl := cluster.New(gr, "DUMMY")
-
 	for _, tt := range tests {
 		t.Run(tt.want, func(t *testing.T) {
-			guessImpl(&tt.comp, cl)
-			if got := cl.AttributesMap.Value("label"); got != tt.want {
+			guessImplByProvider(tt.prov)(&tt.comp)
+			if got := tt.comp.Impl; got != tt.want {
 				t.Errorf("got [%v] want [%v]", got, tt.want)
 			}
 		})

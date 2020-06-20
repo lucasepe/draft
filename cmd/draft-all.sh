@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export DRAFT_ICONS_PATH=../icons
 SRC_DIR=../examples
 DPI=120
 EXE=./dist/draft_linux_amd64/draft
@@ -21,12 +22,7 @@ declare -a arr=("$SRC_DIR/cli.yml"
                 "$SRC_DIR/dns.yml"
                 "$SRC_DIR/waf.yml"
                 "$SRC_DIR/kub.yml"
-                "$SRC_DIR/mem.yml"
-                "$SRC_DIR/system-view.yml"
-                "$SRC_DIR/message-bus-pattern.yml"
-                "$SRC_DIR/aws-cognito-custom-auth-flow.yml"
-                "$SRC_DIR/s3-upload-presigned-url.yml"
-                "$SRC_DIR/backend-for-frontend.yml" )
+                "$SRC_DIR/mem.yml" )
 
 ## now loop through the above array
 for i in "${arr[@]}"
@@ -34,10 +30,23 @@ do
    # grab the filename without extension
    filename=$(basename -- "$i")
    # run draft...run!
-   "$EXE" "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}.png"
+   "$EXE" -verbose "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}.png"
 
-   "$EXE" -impl aws "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_aws.png"
-   "$EXE" -impl gcp "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_gcp.png"
-   "$EXE" -impl azure "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_azure.png"
-
+   "$EXE" -verbose -impl aws "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_aws.png"
+   "$EXE" -verbose -impl gcp "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_gcp.png"
+   "$EXE" -verbose -impl azure "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_azure.png"
 done
+
+"$EXE" -verbose "$SRC_DIR/system-view.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/system-view.png"
+"$EXE" -verbose -impl aws "$SRC_DIR/system-view.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/system-view-aws.png"
+
+"$EXE" -verbose "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example.png"
+"$EXE" -verbose -impl aws "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-aws.png"
+"$EXE" -verbose -impl gcp "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-gcp.png"
+"$EXE" -verbose -impl azure "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-azure.png"
+
+"$EXE" -verbose "$SRC_DIR/cognito-custom-auth-flow.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/cognito-custom-auth-flow.png"
+"$EXE" -verbose -impl aws "$SRC_DIR/cognito-custom-auth-flow.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/cognito-custom-auth-flow-aws.png"
+
+"$EXE" -verbose "$SRC_DIR/s3-upload-presigned-url.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/s3-upload-presigned-url.png"
+"$EXE" -verbose -impl aws "$SRC_DIR/s3-upload-presigned-url.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/s3-upload-presigned-url-aws.png"

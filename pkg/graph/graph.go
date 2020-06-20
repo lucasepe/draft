@@ -101,7 +101,7 @@ func New(attrs ...Attribute) *dot.Graph {
 	FontSize(13)(el)
 	LeftToRight()(el)
 	RankSep(1.1)(el)
-	NodeSep(0.8)(el)
+	NodeSep(0.4)(el)
 
 	for _, opt := range attrs {
 		opt(el)

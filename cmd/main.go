@@ -14,8 +14,7 @@ import (
 // go run main.go | dot -Tpng -Gdpi=300 > test.png
 
 const (
-	maxFileSize = 500 * 1024
-	banner      = `
+	banner = `
 ______                __  _   
 |  _  \              / _|| |        Crafted with passion by Luca Sepe
 | | | | _ __   __ _ | |_ | |_       
@@ -31,6 +30,7 @@ var (
 
 	flagBottomTop bool
 	flagOrtho     bool
+	flagVerbose   bool
 	flagImpl      string
 )
 
@@ -42,25 +42,19 @@ func main() {
 		os.Exit(2)
 	}
 
-	fn, err := filepath.Abs(flag.Args()[0])
-	handleErr(err, fn)
+	uri := flag.Args()[0]
 
-	file, err := os.Open(fn)
-	handleErr(err, fn)
+	cfg := draft.NewConfig(
+		draft.Verbose(flagVerbose),
+		draft.BottomTop(flagBottomTop),
+		draft.Provider(flagImpl),
+		draft.URI(uri),
+	)
 
-	defer file.Close()
+	dia, err := draft.Sketch(cfg)
+	handleErr(err, uri)
 
-	ark, err := draft.NewDraft(file)
-	handleErr(err, fn)
-
-	ark.BottomTop(flagBottomTop)
-	ark.Ortho(flagOrtho)
-	ark.Provider(flagImpl)
-
-	str, err := ark.Sketch()
-	handleErr(err, fn)
-
-	fmt.Println(str)
+	fmt.Println(dia)
 }
 
 // handleErr check for an error and eventually exit
@@ -72,11 +66,11 @@ func handleErr(err error, src string) {
 }
 
 func configureFlags() {
+	name := filepath.Base(os.Args[0])
+
 	flag.CommandLine.Usage = func() {
 		printBanner()
-		fmt.Printf("Generate High Level Microservice Architecture diagrams for GraphViz using simple YAML syntax.\n\n")
-
-		name := filepath.Base(os.Args[0])
+		fmt.Printf("Generate High Level microservices Architecture diagrams for GraphViz using simple YAML syntax.\n\n")
 
 		fmt.Print("USAGE:\n\n")
 		fmt.Printf("  %s [options] /path/to/yaml/file\n\n", name)
@@ -96,8 +90,9 @@ func configureFlags() {
 	flag.CommandLine.Init(os.Args[0], flag.ExitOnError)
 
 	flag.CommandLine.BoolVar(&flagBottomTop, "bottom-top", false, "if true sets layout dir as bottom top")
-	flag.CommandLine.BoolVar(&flagOrtho, "ortho", false, "if true edges are drawn as line segments")
+	//flag.CommandLine.BoolVar(&flagOrtho, "ortho", false, "if true edges are drawn as line segments")
 	flag.CommandLine.StringVar(&flagImpl, "impl", "", "auto fill the specific provider services (aws, gcp or azure)")
+	flag.CommandLine.BoolVar(&flagVerbose, "verbose", false, fmt.Sprintf("show some extra info as %s is running", name))
 
 	flag.CommandLine.Parse(os.Args[1:])
 }

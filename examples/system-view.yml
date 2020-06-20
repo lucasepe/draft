@@ -7,58 +7,35 @@ components:
     label: Client App
   -
     kind: waf
-    impl: AWS WAF
-    provider: AWS
   -
     kind: cdn
-    impl: AWS Cloudfront
-    provider: AWS
   -
     kind: gtw
-    impl: API Gateway
-    provider: AWS
   -
     kind: lba
-    impl: AWS NLB
-    provider: AWS
   -
     kind: fun
     label: Verify JWT
-    impl: AWS Lambda
-    provider: AWS
   -
     kind: fun
     label: Verify OTP
-    impl: AWS Lambda
-    provider: AWS
   -
     kind: kub
-    impl: AWS ECS
-    provider: AWS
   -
     kind: ser
     label: Token Manager
-    impl: AWS EC2
-    provider: AWS
   -
     kind: mem
     label: Redis
-    impl: Amazon ElastiCache
-    provider: AWS
     fillColor: '#d82a0b'
-    fontColor: '#ffffff'
   -
     kind: ost
     label: Bucket
-    impl: AWS S3
-    provider: AWS
     fillColor: '#571307'
     fontColor: '#ffffff'
   -
     kind: rdb
     label: MySQL
-    impl: Amazon RDS
-    provider: AWS
     fillColor: '#285192'
     fontColor: '#ffffff'
 connections:
@@ -105,10 +82,3 @@ connections:
         id: ost1
       -
         id: rdb1
-ranks:
-  -
-    name: rank1
-    components:
-      - gtw1
-      - lba1
-      - kub1

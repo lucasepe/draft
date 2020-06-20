@@ -2,9 +2,20 @@ package draft
 
 import (
 	"strings"
-
-	"github.com/emicklei/dot"
 )
+
+func guessImplByProvider(prov string) func(*Component) {
+	return func(com *Component) {
+		if s := strings.TrimSpace(com.Impl); len(s) > 0 {
+			return
+		}
+
+		impl := getCloudImpl(prov, com.Kind)
+		if len(impl) > 0 {
+			com.Impl = impl
+		}
+	}
+}
 
 func getCloudImpl(provider, kind string) string {
 	switch strings.TrimSpace(strings.ToLower(provider)) {
@@ -88,6 +99,7 @@ func azureImpl() func(string) string {
 	}
 }
 
+/*
 func guessImpl(cmp *Component, cluster *dot.Graph) {
 	if s := strings.TrimSpace(cmp.Impl); len(s) > 0 {
 		return
@@ -98,3 +110,4 @@ func guessImpl(cmp *Component, cluster *dot.Graph) {
 		cluster.Attr("label", impl)
 	}
 }
+*/
