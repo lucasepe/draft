@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/emicklei/dot"
+	"github.com/lucasepe/draft/pkg/cluster"
 	"github.com/lucasepe/draft/pkg/edge"
 	"github.com/lucasepe/draft/pkg/graph"
 )
@@ -141,9 +142,18 @@ func sketchComponents(gfx *dot.Graph, cfg Config, items []Component) error {
 			fmt.Fprintf(os.Stderr, "  • component: %s\n", string(bin))
 		}
 
-		if ok := figIcon(cfg, it)(gfx); !ok {
+		parent := gfx
+		if strings.TrimSpace(it.Outline) != "" {
+			parent = cluster.New(gfx, it.Outline,
+				cluster.PenColor("#d9cc31"),
+				cluster.FontName("Fira Mono"),
+				cluster.FontSize(10),
+				cluster.FontColor("#63625b"))
+		}
+
+		if ok := figIcon(cfg, it)(parent); !ok {
 			if fig, found := figRegistry[it.Kind]; found {
-				fig(cfg, it)(gfx)
+				fig(cfg, it)(parent)
 			} else {
 				return fmt.Errorf("sketcher not found for component of kind <%s>", it.Kind)
 			}

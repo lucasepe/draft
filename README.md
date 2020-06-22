@@ -1,6 +1,6 @@
 # Draft
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; [![Coverage](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft)](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; [![Go Coverage](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft)](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
 
 A commandline tool that generate **H**igh **L**evel microservice & serverless **A**rchitecture diagrams using a declarative syntax defined in a YAML file.
 
