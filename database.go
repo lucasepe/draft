@@ -22,6 +22,10 @@ func figRDB(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			return false
 		}
 
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "RDB"
+		}
+
 		if fc := strings.TrimSpace(com.FontColor); len(fc) == 0 {
 			com.FontColor = "#000000ff"
 		}
@@ -116,7 +120,7 @@ func figCache(ctx Config, com Component) func(gfx *dot.Graph) bool {
     </tr>
 	</table>`, "{{BGCOLOR}}", com.FillColor, -1)
 
-		label = fmt.Sprintf(label, caption)
+		label = fmt.Sprintf(label, strings.ReplaceAll(caption, "\n", "<br/>"))
 
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 

@@ -12,7 +12,7 @@ func TestBlockStoreFigure(t *testing.T) {
 		find string
 		want bool
 	}{
-		{kindBlockStore, `label=<<table border="0" cellspacing="4" cellpadding="4"><tr>  <td border="1" bgcolor="#606f5cff" width="30"></td>  <td border="1" bgcolor="#606f5cff"></td></tr><tr>  <td border="1" bgcolor="#606f5cff" width="30"></td>  <td border="1" bgcolor="#606f5cff"></td></tr></table>>`, true},
+		{kindBlockStore, `label=<<table border="0" cellspacing="4" cellpadding="4"><tr>  <td border="1" bgcolor="#606f5cff" width="30"></td>  <td border="1" bgcolor="#606f5cff"></td></tr><tr>  <td border="1" bgcolor="#606f5cff" width="30"></td>  <td border="1" bgcolor="#606f5cff"></td></tr><tr><td border="0" colspan="2"><font point-size="7">Block Store</font></td></tr></table>>`, true},
 	}
 
 	gfx := dot.NewGraph(dot.Directed)

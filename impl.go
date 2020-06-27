@@ -21,8 +21,8 @@ func getCloudImpl(provider, kind string) string {
 	switch strings.TrimSpace(strings.ToLower(provider)) {
 	case "aws":
 		return awsImpl()(kind)
-	case "gcp":
-		return gcpImpl()(kind)
+	case "google":
+		return googleImpl()(kind)
 	case "azure":
 		return azureImpl()(kind)
 	default:
@@ -32,20 +32,20 @@ func getCloudImpl(provider, kind string) string {
 
 func awsImpl() func(string) string {
 	dict := map[string]string{
-		"bst": "Elastic Block\nStore (EBS)",
-		"cdn": "Cloudfront",
-		"dns": "Route 53",
-		"doc": "DynamoDB",
-		"fst": "Elastic\nFile System (EFS)",
-		"fun": "Lambda",
-		"gtw": "API Gateway",
-		"lba": "Elastic\nLoad Balancer",
-		"kub": "Elastic Container Service\nfor Kubernetes (EKS)",
-		"mem": "ElastiCache",
-		"msg": "SNS",
-		"ost": "Simple Storage\nService (S3)",
-		"rdb": "Relational Database\nService (RDS)",
-		"waf": "AWS WAF",
+		kindBlockStore:        "Elastic Block\nStore (EBS)",
+		kindCDN:               "Cloudfront",
+		kindDNS:               "Route 53",
+		kindNoSQL:             "DynamoDB",
+		kindFileStore:         "Elastic\nFile System (EFS)",
+		kindFunction:          "Lambda",
+		kindGateway:           "API Gateway",
+		kindLBA:               "Elastic\nLoad Balancer",
+		kindContainersManager: "Elastic Container Service\nfor Kubernetes (EKS)",
+		kindCache:             "ElastiCache",
+		kindPubSub:            "SNS",
+		kindObjectStore:       "Simple Storage\nService (S3)",
+		kindRDB:               "Relational Database\nService (RDS)",
+		kindFirewall:          "AWS WAF",
 	}
 
 	return func(key string) string {
@@ -53,22 +53,22 @@ func awsImpl() func(string) string {
 	}
 }
 
-func gcpImpl() func(string) string {
+func googleImpl() func(string) string {
 	dict := map[string]string{
-		"bst": "Persistent Disk",
-		"cdn": "Cloud CDN",
-		"dns": "Cloud DNS",
-		"doc": "Cloud Datastore",
-		"fst": "Cloud Filestore",
-		"fun": "Cloud Functions",
-		"gtw": "Cloud Endpoints",
-		"lba": "Cloud Load Balancing",
-		"kub": "Google Kubernetes\nEngine",
-		"mem": "Cloud Memorystore",
-		"msg": "Cloud Pub/Sub",
-		"ost": "Cloud Storage",
-		"rdb": "Cloud SQL",
-		"waf": "Google Armor",
+		kindBlockStore:        "Persistent Disk",
+		kindCDN:               "Cloud CDN",
+		kindDNS:               "Cloud DNS",
+		kindNoSQL:             "Cloud Datastore",
+		kindFileStore:         "Cloud Filestore",
+		kindFunction:          "Cloud Functions",
+		kindGateway:           "Cloud Endpoints",
+		kindLBA:               "Cloud Load Balancing",
+		kindContainersManager: "Google Kubernetes\nEngine",
+		kindCache:             "Cloud Memorystore",
+		kindPubSub:            "Cloud Pub/Sub",
+		kindObjectStore:       "Cloud Storage",
+		kindRDB:               "Cloud SQL",
+		kindFirewall:          "Google Armor",
 	}
 
 	return func(key string) string {
@@ -78,36 +78,23 @@ func gcpImpl() func(string) string {
 
 func azureImpl() func(string) string {
 	dict := map[string]string{
-		"bst": "Disk Storage",
-		"cdn": "Azure CDN",
-		"dns": "Azure DNS",
-		"doc": "Cosmos DB",
-		"fst": "Azure File Storage",
-		"fun": "Azure Functions",
-		"gtw": "Azure API Management",
-		"lba": "Load Balancer",
-		"kub": "Azure Kubernetes\nService (AKS)",
-		"mem": "Redis Caches",
-		"msg": "Notification Hubs",
-		"ost": "Blob Storage",
-		"rdb": "SQL Database",
-		"waf": "Azure Firewall",
+		kindBlockStore:        "Disk Storage",
+		kindCDN:               "Azure CDN",
+		kindDNS:               "Azure DNS",
+		kindNoSQL:             "Cosmos DB",
+		kindFileStore:         "Azure File Storage",
+		kindFunction:          "Azure Functions",
+		kindGateway:           "Azure API Management",
+		kindLBA:               "Load Balancer",
+		kindContainersManager: "Azure Kubernetes\nService (AKS)",
+		kindCache:             "Redis Caches",
+		kindPubSub:            "Notification Hubs",
+		kindObjectStore:       "Blob Storage",
+		kindRDB:               "SQL Database",
+		kindFirewall:          "Azure Firewall",
 	}
 
 	return func(key string) string {
 		return dict[key]
 	}
 }
-
-/*
-func guessImpl(cmp *Component, cluster *dot.Graph) {
-	if s := strings.TrimSpace(cmp.Impl); len(s) > 0 {
-		return
-	}
-
-	impl := getCloudImpl(cmp.provider, cmp.Kind)
-	if len(impl) > 0 {
-		cluster.Attr("label", impl)
-	}
-}
-*/

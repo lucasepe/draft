@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2020-06-27
+### Added
+- 🎉 load architecture YAML files from remote HTTP sites 
+  - `draft 'http://my.my.domain.com/arch.yml' | dot -Tpng > arch.png`
+
+### Fixed
+- 🐛 [issue #5](https://github.com/lucasepe/draft/issues/5) labels for all components and connections
+
+### Changed
+- `impl` flag value for Google Cloud is now `google` 
+
 ## [0.6.1] - 2020-06-22
 ### Fixed
 - 🐛 outline frames not working

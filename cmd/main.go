@@ -9,12 +9,14 @@ import (
 	"strings"
 
 	"github.com/lucasepe/draft"
+	"github.com/mitchellh/go-homedir"
 )
 
 // go run main.go | dot -Tpng -Gdpi=300 > test.png
 
 const (
-	banner = `
+	envIconsPath = "DRAFT_ICONS_PATH"
+	banner       = `
 ______                __  _   
 |  _  \              / _|| |        Crafted with passion by Luca Sepe
 | | | | _ __   __ _ | |_ | |_       
@@ -35,6 +37,10 @@ var (
 )
 
 func main() {
+	if dir := os.Getenv(envIconsPath); len(dir) == 0 {
+		setDefaultIconsPath()
+	}
+
 	configureFlags()
 
 	if flag.CommandLine.Arg(0) == "" {
@@ -48,6 +54,7 @@ func main() {
 		draft.Verbose(flagVerbose),
 		draft.BottomTop(flagBottomTop),
 		draft.Provider(flagImpl),
+		draft.IconsPath(os.Getenv(envIconsPath)),
 		draft.URI(uri),
 	)
 
@@ -66,23 +73,29 @@ func handleErr(err error, src string) {
 }
 
 func configureFlags() {
-	name := filepath.Base(os.Args[0])
+	name := appName()
 
 	flag.CommandLine.Usage = func() {
 		printBanner()
-		fmt.Printf("Generate High Level microservices Architecture diagrams for GraphViz using simple YAML syntax.\n\n")
+		fmt.Printf("Generate High Level Cloud Architecture diagrams using YAML.\n\n")
 
 		fmt.Print("USAGE:\n\n")
-		fmt.Printf("  %s [options] /path/to/yaml/file\n\n", name)
+		fmt.Printf("  %s [options] <yaml file or url>\n\n", name)
 
-		fmt.Print("EXAMPLE:\n\n")
-		fmt.Printf("  %s input.yml | dot -Tpng -Gdpi=200 > output.png\n\n", name)
+		fmt.Print("EXAMPLE(s):\n\n")
+		fmt.Printf("  %s input.yml | dot -Tpng -Gdpi=200 > output.png\n", name)
+		fmt.Printf("  %s http://a.domain.com/input.yml | dot -Tpng -Gdpi=200 > output.png\n\n", name)
 
 		fmt.Print("OPTIONS:\n\n")
 		flag.CommandLine.SetOutput(os.Stdout)
 		flag.CommandLine.PrintDefaults()
 		flag.CommandLine.SetOutput(ioutil.Discard) // hide flag errors
 		fmt.Print("  -help\n\tprints this message\n")
+		fmt.Println()
+
+		fmt.Print("ENVIRONMENT:\n\n")
+		fmt.Fprint(os.Stdout, "  DRAFT_ICONS_PATH\n")
+		fmt.Fprintf(os.Stdout, "  \tthe base path for custom icons (default %s)\n", os.Getenv(envIconsPath))
 		fmt.Println()
 	}
 
@@ -91,7 +104,7 @@ func configureFlags() {
 
 	flag.CommandLine.BoolVar(&flagBottomTop, "bottom-top", false, "if true sets layout dir as bottom top")
 	//flag.CommandLine.BoolVar(&flagOrtho, "ortho", false, "if true edges are drawn as line segments")
-	flag.CommandLine.StringVar(&flagImpl, "impl", "", "auto fill the specific provider services (aws, gcp or azure)")
+	flag.CommandLine.StringVar(&flagImpl, "impl", "", "auto fill the specific provider services (aws, google, azure)")
 	flag.CommandLine.BoolVar(&flagVerbose, "verbose", false, fmt.Sprintf("show some extra info as %s is running", name))
 
 	flag.CommandLine.Parse(os.Args[1:])
@@ -99,4 +112,28 @@ func configureFlags() {
 
 func printBanner() {
 	fmt.Print(strings.Trim(strings.Replace(banner, "{{VERSION}}", version, 1), "\n"), "\n\n")
+}
+
+// setDefaultIconsPath sets the default icons directory
+// creating it if does not exists.
+func setDefaultIconsPath() error {
+	home, err := homedir.Dir()
+	if err != nil {
+		return err
+	}
+
+	workdir := filepath.Join(home, fmt.Sprintf(".%s", appName()), "icons")
+	if _, err := os.Stat(workdir); os.IsNotExist(err) {
+		err = os.MkdirAll(workdir, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+
+	os.Setenv(envIconsPath, workdir)
+	return nil
+}
+
+func appName() string {
+	return filepath.Base(os.Args[0])
 }

@@ -33,7 +33,7 @@ do
    "$EXE" -verbose "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}.png"
 
    "$EXE" -verbose -impl aws "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_aws.png"
-   "$EXE" -verbose -impl gcp "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_gcp.png"
+   "$EXE" -verbose -impl google "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_google.png"
    "$EXE" -verbose -impl azure "$i" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/${filename%.*}_azure.png"
 done
 
@@ -42,7 +42,7 @@ done
 
 "$EXE" -verbose "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example.png"
 "$EXE" -verbose -impl aws "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-aws.png"
-"$EXE" -verbose -impl gcp "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-gcp.png"
+"$EXE" -verbose -impl google "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-google.png"
 "$EXE" -verbose -impl azure "$SRC_DIR/impl-example.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/impl-example-azure.png"
 
 "$EXE" -verbose "$SRC_DIR/cognito-custom-auth-flow.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/cognito-custom-auth-flow.png"
@@ -50,3 +50,8 @@ done
 
 "$EXE" -verbose "$SRC_DIR/s3-upload-presigned-url.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/s3-upload-presigned-url.png"
 "$EXE" -verbose -impl aws "$SRC_DIR/s3-upload-presigned-url.yml" | dot -Tpng -Gdpi=$DPI > "$SRC_DIR/s3-upload-presigned-url-aws.png"
+
+"$EXE" -verbose "$SRC_DIR/demo.yml" | dot -Tpng > "$SRC_DIR/demo.png"
+"$EXE" -verbose -impl aws "$SRC_DIR/demo.yml" | dot -Tpng > "$SRC_DIR/demo-aws.png"
+"$EXE" -verbose -impl google "$SRC_DIR/demo.yml" | dot -Tpng > "$SRC_DIR/demo-google.png"
+"$EXE" -verbose -impl azure "$SRC_DIR/demo.yml" | dot -Tpng > "$SRC_DIR/demo-azure.png"

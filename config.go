@@ -31,7 +31,7 @@ func BottomTop(enable bool) func(*Config) {
 
 // Provider sets the cloud implementation (one of 'aws', 'gcp', 'azure')
 func Provider(s string) func(*Config) {
-	provs := map[string]bool{"aws": true, "gcp": true, "azure": true}
+	provs := map[string]bool{"aws": true, "google": true, "azure": true}
 
 	return func(cfg *Config) {
 		val := strings.ToLower(strings.TrimSpace(s))
@@ -55,11 +55,19 @@ func URI(s string) func(*Config) {
 	}
 }
 
+// IconsPath sets the custom icons path.
+func IconsPath(s string) func(*Config) {
+	return func(cfg *Config) {
+		cfg.iconsPath = strings.TrimSpace(s)
+	}
+}
+
 // Config defines the 'draft' configuration.
 type Config struct {
 	bottomTop bool
 	provider  string
 	verbose   bool
+	iconsPath string
 	uri       string
 }
 

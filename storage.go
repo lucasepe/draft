@@ -1,6 +1,7 @@
 package draft
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/emicklei/dot"
@@ -29,6 +30,11 @@ func figBlockStore(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			com.FillColor = "#606f5cff"
 		}
 
+		caption := strings.TrimSpace(com.Label)
+		if len(caption) == 0 {
+			caption = "Block Store"
+		}
+
 		label := strings.Replace(`<table border="0" cellspacing="4" cellpadding="4">
 	<tr>
 	  <td border="1" bgcolor="{{BGCOLOR}}" width="30"></td>
@@ -38,7 +44,10 @@ func figBlockStore(ctx Config, com Component) func(gfx *dot.Graph) bool {
 	  <td border="1" bgcolor="{{BGCOLOR}}" width="30"></td>
 	  <td border="1" bgcolor="{{BGCOLOR}}"></td>
 	</tr>
+	<tr><td border="0" colspan="2"><font point-size="7">%s</font></td></tr>
 	</table>`, "{{BGCOLOR}}", com.FillColor, -1)
+
+		label = fmt.Sprintf(label, strings.ReplaceAll(caption, "\n", "<br/>"))
 
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
@@ -71,6 +80,10 @@ func figFileStore(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			com.FillColor = "#dadd29ff"
 		}
 
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "Files\nStore"
+		}
+
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
@@ -101,7 +114,7 @@ func figObjectStore(ctx Config, com Component) func(gfx *dot.Graph) bool {
 		}
 
 		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
-			com.Label = "Object\nStorage"
+			com.Label = "Object\nStore"
 		}
 
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))

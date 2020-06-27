@@ -14,9 +14,9 @@ func TestCloudImpl(t *testing.T) {
 		{"aws", "lba", "Elastic\nLoad Balancer"},
 		{"aws", "ost", "Simple Storage\nService (S3)"},
 
-		{"gcp", "kub", "Google Kubernetes\nEngine"},
-		{"gcp", "mem", "Cloud Memorystore"},
-		{"gcp", "ost", "Cloud Storage"},
+		{"google", "kub", "Google Kubernetes\nEngine"},
+		{"google", "mem", "Cloud Memorystore"},
+		{"google", "ost", "Cloud Storage"},
 
 		{"azure", "dns", "Azure DNS"},
 		{"azure", "mem", "Redis Caches"},
@@ -52,15 +52,15 @@ func TestGuessImpl(t *testing.T) {
 		},
 
 		{
-			"gcp", Component{Kind: "kub"},
+			"google", Component{Kind: "kub"},
 			"Google Kubernetes\nEngine",
 		},
 		{
-			"gcp", Component{Kind: "mem"},
+			"google", Component{Kind: "mem"},
 			"Cloud Memorystore",
 		},
 		{
-			"gcp", Component{Kind: "ost"},
+			"google", Component{Kind: "ost"},
 			"Cloud Storage",
 		},
 

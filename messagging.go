@@ -21,6 +21,10 @@ func figPubSub(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			return false
 		}
 
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "Pub/Sub"
+		}
+
 		if fc := strings.TrimSpace(com.FontColor); len(fc) == 0 {
 			com.FontColor = "#000000ff"
 		}
@@ -32,7 +36,7 @@ func figPubSub(ctx Config, com Component) func(gfx *dot.Graph) bool {
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
-			node.Label("<b>Pub / Sub</b>", true),
+			node.Label(com.Label, false),
 			node.FontColor(com.FontColor),
 			node.FillColor(com.FillColor),
 			node.Shape("cds"),

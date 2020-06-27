@@ -22,16 +22,28 @@ func figCDN(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			return false
 		}
 
+		if fc := strings.TrimSpace(com.FontColor); len(fc) == 0 {
+			com.FontColor = "#f5f5f5ff"
+		}
+
+		if fc := strings.TrimSpace(com.FillColor); len(fc) == 0 {
+			com.FillColor = "#47df9aff"
+		}
+
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "CDN"
+		}
+
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
-			node.Label("<b>CDN</b>", true),
-			node.FontColor("#000000ff"),
-			node.FillColor("#47df9aff"),
+			node.Label(com.Label, false),
+			node.FontColor(com.FontColor),
+			node.FillColor(com.FillColor),
 			node.Shape("Mcircle"),
 		)
 		el.Attr("height", "0.5")
-		el.Attr("color", "#f5f5f5ff")
+		el.Attr("color", com.FontColor)
 
 		return true
 	}
@@ -44,16 +56,28 @@ func figDNS(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			return false
 		}
 
+		if fc := strings.TrimSpace(com.FontColor); len(fc) == 0 {
+			com.FontColor = "#f5f5f5ff"
+		}
+
+		if fc := strings.TrimSpace(com.FillColor); len(fc) == 0 {
+			com.FillColor = "#854eadff"
+		}
+
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "DNS"
+		}
+
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
-			node.Label("<b>DNS</b>", true),
-			node.FontColor("#f5f5f5ff"),
-			node.FillColor("#854eadff"),
+			node.Label(com.Label, false),
+			node.FontColor(com.FontColor),
+			node.FillColor(com.FillColor),
 			node.Shape("Msquare"),
 		)
 		el.Attr("height", "0.3")
-		el.Attr("color", "#f5f5f5ff")
+		el.Attr("color", com.FontColor)
 
 		return true
 	}
@@ -66,17 +90,29 @@ func figLBA(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			return false
 		}
 
+		if fc := strings.TrimSpace(com.FontColor); len(fc) == 0 {
+			com.FontColor = "#f5f5f5ff"
+		}
+
+		if fc := strings.TrimSpace(com.FillColor); len(fc) == 0 {
+			com.FillColor = "#1a5276ff"
+		}
+
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "LB"
+		}
+
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
-			node.Label("<b>LB</b>", true),
-			node.FontColor("#f5f5f5ff"),
-			node.FillColor("#1a5276ff"),
+			node.Label(com.Label, false),
+			node.FontColor(com.FontColor),
+			node.FillColor(com.FillColor),
 			node.Shape("Mdiamond"),
 		)
 		el.Attr("width", "0.3")
 		el.Attr("height", "0.3")
-		el.Attr("color", "#f5f5f5ff")
+		el.Attr("color", com.FontColor)
 
 		return true
 	}
@@ -89,16 +125,28 @@ func figGateway(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			return false
 		}
 
+		if fc := strings.TrimSpace(com.FontColor); len(fc) == 0 {
+			com.FontColor = "#f5f5f5ff"
+		}
+
+		if fc := strings.TrimSpace(com.FillColor); len(fc) == 0 {
+			com.FillColor = "#ff7f00ff"
+		}
+
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "AGW"
+		}
+
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
-			node.Label("<b>GTW</b>", true),
-			node.FontColor("#f5f5f5ff"),
-			node.FillColor("#ff7f00ff"),
+			node.Label(com.Label, false),
+			node.FontColor(com.FontColor),
+			node.FillColor(com.FillColor),
 			node.Shape("doublecircle"),
 		)
 		el.Attr("width", "0.1")
-		el.Attr("color", "#ff7f00ff")
+		el.Attr("color", com.FontColor)
 
 		return true
 	}

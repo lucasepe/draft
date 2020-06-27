@@ -16,8 +16,8 @@ func TestIconFigure(t *testing.T) {
 	}{
 		{"aws", kindFirewall, `src="icons/aws/waf.png"`, true},
 		{"aws", kindFunction, `src="icons/aws/fun.png"`, true},
-		{"gcp", kindRDB, `src="icons/gcp/rdb.png"`, true},
-		{"gcp", kindCache, `src="icons/gcp/mem.png"`, true},
+		{"google", kindRDB, `src="icons/google/rdb.png"`, true},
+		{"google", kindCache, `src="icons/google/mem.png"`, true},
 		{"azure", kindDNS, `src="icons/azure/dns.png"`, true},
 		{"azure", kindCDN, `src="icons/azure/cdn.png"`, true},
 	}

@@ -48,21 +48,24 @@ func TestSketchComponents(t *testing.T) {
 		t.Error(err)
 	}
 
-	want := `digraph  {
-		subgraph cluster_s5 {
-			fontname="Fira Mono Bold";fontsize="9.00";label="";labelloc="t";pencolor="transparent";
-			n6[fillcolor="#d1c8d4ff",fontcolor="#000000ff",fontname="Fira Mono",fontsize="9.00",height="0.5",label="NoSQL",shape="note",style="filled"];
+	if n, ok := gfx.FindNodeById("gtw1"); ok {
+		want := "doublecircle"
+		if got := n.Value("shape"); got != want {
+			t.Errorf("got [%v] want [%v]", got, want)
 		}
-		subgraph cluster_s3 {
-			fontname="Fira Mono Bold";fontsize="9.00";label="";labelloc="t";pencolor="transparent";
-			n4[fillcolor="#abd9e9ff",fontcolor="#000000ff",fontname="Fira Mono",fontsize="6",height="0.5",label="",shape="signature",style="filled"];
+	}
+
+	if n, ok := gfx.FindNodeById("fun1"); ok {
+		want := "signature"
+		if got := n.Value("shape"); got != want {
+			t.Errorf("got [%v] want [%v]", got, want)
 		}
-		subgraph cluster_s1 {
-			fontname="Fira Mono Bold";fontsize="9.00";label="";labelloc="t";pencolor="transparent";
-			n2[color="#ff7f00ff",fillcolor="#ff7f00ff",fontcolor="#f5f5f5ff",fontname="Fira Mono",fontsize="9.00",label=<<b>GTW</b>>,shape="doublecircle",style="filled",width="0.1"];
+	}
+
+	if n, ok := gfx.FindNodeById("doc1"); !ok {
+		want := "note"
+		if got := n.Value("shape"); got != want {
+			t.Errorf("got [%v] want [%v]", got, want)
 		}
-	}`
-	if got := flatten(gfx.String()); got != flatten(want) {
-		t.Errorf("got [%v] want [%v]", got, want)
 	}
 }

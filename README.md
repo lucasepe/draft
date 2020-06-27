@@ -10,6 +10,9 @@ A commandline tool that generate **H**igh **L**evel microservice & serverless **
 - Input data in flat YAML text files
 - Usable with shell scripts
 
+![](./cli-output.png)
+
+
 # Why?
 
 I prefer to think in terms of capabilities rather than specific vendor services.
@@ -29,25 +32,19 @@ I prefer to think in terms of capabilities rather than specific vendor services.
 draft backend-for-frontend.yml | dot -Tpng -Gdpi=200 > backend-for-frontend.png 
 ```
 
-Piping the `draft` output to [GraphViz](http://www.graphviz.org/doc/info/output.html/) `dot` you can generate the following output formats:
+Piping the `draft` output to [GraphViz](http://www.graphviz.org/doc/info/output.html/) `dot` you can generate different output formats:
 
 | format       | command                                                        |
 |:-------------|:---------------------------------------------------------------|
-| GIF          | <code>draft input.yml &#124; dot -Tgif > output.gif</code>     |
+| PNG          | <code>draft input.yml &#124; dot -Tpng > output.png</code>     |
 | JPEG         | <code>draft input.yml &#124; dot -Tjpg > output.jpg</code>     |
 | PostScript   | <code>draft input.yml &#124; dot -Tps > output.ps</code>       |
-| PSD          | <code>draft input.yml &#124; dot -Tpsd > output.psd</code>     |
 | SVG          | <code>draft input.yml &#124; dot -Tsvg > output.svg</code>     |
-| WebP         | <code>draft input.yml &#124; dot -Twebp > output.webp</code>   |
 
 To install GraphViz to your favorite OS, please, follow this link [https://graphviz.gitlab.io/download/](https://graphviz.gitlab.io/download/).
 
 
 # Components
-
-> a picture is worth a thousand words 
-
-... and this is particularly true in regard to complex IT architectures. 
 
 The basic unit of each _draft_ design is the `component`:
 
@@ -73,25 +70,25 @@ Eventually you can describe...
 
 Below is a list of all the components currently implemented.
 
-| Component            | Kind  | YAML                                        | Output                   | 
-|:---------------------|:------|:--------------------------------------------|:------------------------:|
-| **Client**           | `cli` | 👉 [examples/cli.yml](./examples/cli.yml)   | ![](./examples/cli.png)  |
-| **Microservice**     | `ser` | 👉 [examples/ser.yml](./examples/ser.yml)   | ![](./examples/ser.png)  |  
-| **API Gateway**      | `gtw` | 👉 [examples/gtw.yml](./examples/gtw.yml)   | ![](./examples/gtw.png)  | 
-| **Firewall**         | `waf` | 👉 [examples/waf.yml](./examples/waf.yml)   | ![](./examples/waf.png)  | 
-| **K8s Engine**       | `kub` | 👉 [examples/kub.yml](./examples/kub.yml)   | ![](./examples/kub.png)  |
-| **Pub / Sub**        | `msg` | 👉 [examples/msg.yml](./examples/msg.yml)   | ![](./examples/msg.png)  | 
-| **Queue**            | `que` | 👉 [examples/que.yml](./examples/que.yml)   | ![](./examples/que.png)  | 
-| **Function**         | `fun` | 👉 [examples/fun.yml](./examples/fun.yml)   | ![](./examples/fun.png)  |
-| **Relational DB**    | `rdb` | 👉 [examples/rdb.yml](./examples/rdb.yml)   | ![](./examples/rdb.png)  | 
-| **Document DB**      | `doc` | 👉 [examples/doc.yml](./examples/doc.yml)   | ![](./examples/doc.png)  | 
-| **Caching**          | `mem` | 👉 [examples/mem.yml](./examples/mem.yml)   | ![](./examples/mem.png)  | 
-| **Load Balancer**    | `lba` | 👉 [examples/lba.yml](./examples/lba.yml)   | ![](./examples/lba.png)  |
-| **CDN**              | `cdn` | 👉 [examples/cdn.yml](./examples/cdn.yml)   | ![](./examples/cdn.png)  |
-| **DNS**              | `dns` | 👉 [examples/dns.yml](./examples/dns.yml)   | ![](./examples/dns.png)  |
-| **Block Store**      | `bst` | 👉 [examples/bst.yml](./examples/bst.yml)   | ![](./examples/bst.png)  |
-| **Object Store**     | `ost` | 👉 [examples/ost.yml](./examples/ost.yml)   | ![](./examples/ost.png)  |
-| **File Store**       | `fst` | 👉 [examples/fst.yml](./examples/fst.yml)   | ![](./examples/fst.png)  |
+| Component          | Kind  | YAML                                        | Output                   | 
+|:-------------------|:------|:--------------------------------------------|:------------------------:|
+| **Client**         | `cli` | 👉 [examples/cli.yml](./examples/cli.yml)   | ![](./examples/cli.png)  |
+| **Microservice**   | `ser` | 👉 [examples/ser.yml](./examples/ser.yml)   | ![](./examples/ser.png)  |  
+| **Gateway**        | `gtw` | 👉 [examples/gtw.yml](./examples/gtw.yml)   | ![](./examples/gtw.png)  |
+| **Firewall**       | `waf` | 👉 [examples/waf.yml](./examples/waf.yml)   | ![](./examples/waf.png)  | 
+| **K8s Engine**     | `kub` | 👉 [examples/kub.yml](./examples/kub.yml)   | ![](./examples/kub.png)  |
+| **Pub / Sub**      | `msg` | 👉 [examples/msg.yml](./examples/msg.yml)   | ![](./examples/msg.png)  | 
+| **Queue**          | `que` | 👉 [examples/que.yml](./examples/que.yml)   | ![](./examples/que.png)  | 
+| **Function**       | `fun` | 👉 [examples/fun.yml](./examples/fun.yml)   | ![](./examples/fun.png)  |
+| **Relational DB**  | `rdb` | 👉 [examples/rdb.yml](./examples/rdb.yml)   | ![](./examples/rdb.png)  | 
+| **Document DB**    | `doc` | 👉 [examples/doc.yml](./examples/doc.yml)   | ![](./examples/doc.png)  | 
+| **Caching**        | `mem` | 👉 [examples/mem.yml](./examples/mem.yml)   | ![](./examples/mem.png)  | 
+| **Load Balancer**  | `lba` | 👉 [examples/lba.yml](./examples/lba.yml)   | ![](./examples/lba.png)  |
+| **CDN**            | `cdn` | 👉 [examples/cdn.yml](./examples/cdn.yml)   | ![](./examples/cdn.png)  |
+| **DNS**            | `dns` | 👉 [examples/dns.yml](./examples/dns.yml)   | ![](./examples/dns.png)  |
+| **Block Store**    | `bst` | 👉 [examples/bst.yml](./examples/bst.yml)   | ![](./examples/bst.png)  |
+| **Object Store**   | `ost` | 👉 [examples/ost.yml](./examples/ost.yml)   | ![](./examples/ost.png)  |
+| **File Store**     | `fst` | 👉 [examples/fst.yml](./examples/fst.yml)   | ![](./examples/fst.png)  |
 
 ## Auto filling the component implementation
 
@@ -101,13 +98,12 @@ In your YAML file, leave the `impl` fields empty and run [draft](https://github.
 |:------------------------------------------------------------------------------|:------------------------------:|
 | <code>draft -impl aws ./examples/dns.yml &#124; dot -Tpng > test.png</code>   | ![](./examples/dns_aws.png)    |
 | <code>draft -impl azure ./examples/dns.yml &#124; dot -Tpng > test.png<code>  | ![](./examples/dns_azure.png)  |
-| <code>draft -impl gcp ./examples/kub.yml &#124; dot -Tpng > test.png<code>    | ![](./examples/kub_gcp.png)    |
+| <code>draft -impl google ./examples/kub.yml &#124; dot -Tpng > test.png<code>    | ![](./examples/kub_google.png)    |
 | <code>draft -impl aws ./examples/kub.yml &#124; dot -Tpng > test.png<code>    | ![](./examples/kub_aws.png)    |
 
 ... and so on for each kind of component!
 
 To render components with specific icons read below.
-
 
 ## Rendering components with specific cloud provider icons
 
@@ -115,7 +111,7 @@ To render components with specific icons read below.
 
 2. Take only the icons related to the components supported by [draft](https://github.com/lucasepe/draft/releases/latest)
 
-3. Make a directory with the provider name (i.e. `/draft/icons/aws`, `/draft/icons/gcp`, `/draft/icons/azure`) 
+3. Make a directory with the provider name (i.e. `/draft/icons/aws`, `/draft/icons/google`, `/draft/icons/azure`) 
 
 4. Rename each icon as [draft](https://github.com/lucasepe/draft/releases/latest) components `kind` (i.e. `dns.png`, `cdn.png` and so on...)
 
@@ -140,7 +136,7 @@ An auto-generated component `id` has a prefix and a sequential number
 
 You can connect each component by arrows.
 
-To be able to connect an _origin component_ with one or more _target component_ you need to specify each `componentId`.
+To be able to connect an _origin component_ with one or more _target component_ you need to specify each `id`.
 
 A `connection` has the following properties:
 

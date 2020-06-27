@@ -27,10 +27,14 @@ func figFirewall(ctx Config, com Component) func(gfx *dot.Graph) bool {
 			com.FillColor = "#f3190b"
 		}
 
+		if lab := strings.TrimSpace(com.Label); len(lab) == 0 {
+			com.Label = "WAF"
+		}
+
 		cl := cluster.New(gfx, com.ID, cluster.BottomTop(ctx.bottomTop), cluster.Label(com.Impl))
 
 		el := node.New(cl, com.ID,
-			node.Label("<b>WAF</b>", true),
+			node.Label(com.Label, false),
 			node.FontColor(com.FontColor),
 			node.FillColor(com.FillColor),
 			node.Shape("invhouse"),

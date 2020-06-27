@@ -6,18 +6,12 @@ components:
     impl: SPA
   -
     kind: gtw
-    provider: AWS
-    impl: "API Gateway"
   -
     kind: fun
     label: "Get\nPre-Signed URL"
-    provider: AWS
-    impl: Lambda
   -
     kind: ost
     label: "*.jpg\n*.png"
-    provider: AWS
-    impl: S3
 connections:
   -
     origin: cli1
