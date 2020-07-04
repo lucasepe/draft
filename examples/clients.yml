@@ -1,0 +1,28 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: cli
+    outline: Clients
+    label: 'kind: <b>cli</b>'
+  - 
+    kind: usr
+    outline: Clients
+    label: 'kind: <b>usr</b>'
+  - 
+    kind: web
+    outline: Clients
+    label: 'kind: <b>web</b>'
+connections:
+   -
+     origin: cli1
+     targets:
+       -
+         id: usr1
+         color: transparent
+   -
+     origin: usr1
+     targets:
+       -
+         id: web1
+         color: transparent

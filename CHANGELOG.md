@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2020-07-04
+### Added
+- 🎉 default component icons embedded in the [draft](https://github.com/lucasepe/draft) binary executable
+- 🎉 new connection attribute `num` in order to eventyally number them
+- 🎉 new `labeldistance` `labelangle` and `minlen` attributes in order to have full control of labels displacement
+
+### Changed
+- complete restyling of the icons representing the individual components (see [README.md](./README.md))
+- to render different providers implementations in the same graph `provider` is a _component_ attribute now
+- you can add eventually some simple HTML tag to the component attribute `label`
+- `-impl` flag it's now a simple boolean, if specified it will show each component `impl` attribute - otherwise it will be hide
+
 ## [0.7.0] - 2020-06-27
 ### Added
 - 🎉 load architecture YAML files from remote HTTP sites 

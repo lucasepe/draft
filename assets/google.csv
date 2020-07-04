@@ -1,0 +1,18 @@
+bst,Persistent Disk
+cdn,CDN
+cli,CLI App
+dns,DNS
+doc,Datastore
+fst,Filestore
+fun,Functions
+gtw,Endpoints
+kub,Kubernetes Engine
+lba,Load Balancing
+mem,Memorystore
+msg,Pub/Sub
+ost,Storage
+rdb,SQL
+ser,μService
+usr,User
+waf,Armor
+web,Browser

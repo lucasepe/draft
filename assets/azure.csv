@@ -1,0 +1,18 @@
+bst,Disk Storage
+cdn,CDN
+cli,CLI App
+dns,DNS
+doc,Cosmos DB
+fst,File Storage
+fun,Functions
+gtw,API Management
+kub,AKS
+lba,Load Balancer
+mem,Redis Caches
+msg,Notification Hubs
+ost,Blob Storage
+rdb,SQL Database
+ser,μService
+usr,User
+waf,Firewall
+web,Browser

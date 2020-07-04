@@ -34,3 +34,4 @@ go.sum
 # Goreleaser builds
 dist/**
 
+icons/**

@@ -1,0 +1,8 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: waf
+    outline: Security
+    label: 'kind: <b>waf</b>'
+

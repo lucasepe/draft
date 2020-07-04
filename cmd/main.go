@@ -33,7 +33,7 @@ var (
 	flagBottomTop bool
 	flagOrtho     bool
 	flagVerbose   bool
-	flagImpl      string
+	flagImpl      bool
 )
 
 func main() {
@@ -53,8 +53,8 @@ func main() {
 	cfg := draft.NewConfig(
 		draft.Verbose(flagVerbose),
 		draft.BottomTop(flagBottomTop),
-		draft.Provider(flagImpl),
 		draft.IconsPath(os.Getenv(envIconsPath)),
+		draft.ShowImpl(flagImpl),
 		draft.URI(uri),
 	)
 
@@ -102,9 +102,8 @@ func configureFlags() {
 	flag.CommandLine.SetOutput(ioutil.Discard) // hide flag errors
 	flag.CommandLine.Init(os.Args[0], flag.ExitOnError)
 
-	flag.CommandLine.BoolVar(&flagBottomTop, "bottom-top", false, "if true sets layout dir as bottom top")
-	//flag.CommandLine.BoolVar(&flagOrtho, "ortho", false, "if true edges are drawn as line segments")
-	flag.CommandLine.StringVar(&flagImpl, "impl", "", "auto fill the specific provider services (aws, google, azure)")
+	flag.CommandLine.BoolVar(&flagImpl, "impl", false, "if true show the component provider implementation")
+	flag.CommandLine.BoolVar(&flagBottomTop, "bottom-top", false, "if true sets layout direction as bottom top")
 	flag.CommandLine.BoolVar(&flagVerbose, "verbose", false, fmt.Sprintf("show some extra info as %s is running", name))
 
 	flag.CommandLine.Parse(os.Args[1:])
@@ -129,6 +128,8 @@ func setDefaultIconsPath() error {
 			return err
 		}
 	}
+
+	os.Mkdir(filepath.Join(workdir, "default"), os.ModePerm)
 
 	os.Setenv(envIconsPath, workdir)
 	return nil

@@ -1,6 +1,8 @@
 package draft
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/emicklei/dot"
@@ -41,7 +43,6 @@ func TestSketchComponents(t *testing.T) {
 	items := []Component{
 		{Kind: kindGateway},
 		{Kind: kindFunction},
-		{Kind: kindNoSQL},
 	}
 
 	if err := sketchComponents(gfx, Config{}, items); err != nil {
@@ -49,22 +50,18 @@ func TestSketchComponents(t *testing.T) {
 	}
 
 	if n, ok := gfx.FindNodeById("gtw1"); ok {
-		want := "doublecircle"
-		if got := n.Value("shape"); got != want {
+		got := fmt.Sprintf("%v", n.Value("label"))
+		want := "default/gtw.png"
+
+		if !strings.Contains(got, want) {
 			t.Errorf("got [%v] want [%v]", got, want)
 		}
 	}
 
 	if n, ok := gfx.FindNodeById("fun1"); ok {
-		want := "signature"
-		if got := n.Value("shape"); got != want {
-			t.Errorf("got [%v] want [%v]", got, want)
-		}
-	}
-
-	if n, ok := gfx.FindNodeById("doc1"); !ok {
-		want := "note"
-		if got := n.Value("shape"); got != want {
+		got := fmt.Sprintf("%v", n.Value("label"))
+		want := "default/fun.png"
+		if !strings.Contains(got, want) {
 			t.Errorf("got [%v] want [%v]", got, want)
 		}
 	}

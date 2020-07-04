@@ -25,7 +25,7 @@ func TestHighlightWithLabel(t *testing.T) {
 	di.Node("A")
 	di.Node("B")
 
-	New(di, "A", "B", Highlight(true), Label("Go!"))
+	New(di, "A", "B", Highlight(true), Label(1, "Go!"))
 
 	want := `digraph  {n1[label="A"];n2[label="B"];n1->n2[arrowsize="0.9",fontname="Fira Mono",fontsize="8.00",label="Go!",penwidth="1.2"];}`
 	if got := flatten(di.String()); got != want {

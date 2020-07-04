@@ -1,0 +1,29 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: bst
+    outline: Storage
+    label: 'kind: <b>bst</b>'
+  - 
+    kind: ost
+    outline: Storage
+    label: 'kind: <b>ost</b>'
+  - 
+    kind: fst
+    outline: Storage
+    label: 'kind: <b>fst</b>'
+connections:
+   -
+     origin: bst1
+     targets:
+       -
+         id: ost1
+         color: transparent
+   -
+     origin: ost1
+     targets:
+       -
+         id: fst1
+         color: transparent
+

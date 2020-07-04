@@ -1,6 +1,0 @@
---- 
-components: 
-  - 
-    kind: cli
-    label: Web App
-    fontColor: '#8b33ac'

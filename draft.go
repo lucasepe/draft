@@ -12,36 +12,20 @@ import (
 	"github.com/lucasepe/draft/pkg/graph"
 )
 
-const (
-	kindClient            = "cli"
-	kindGateway           = "gtw"
-	kindService           = "ser"
-	kindQueue             = "que"
-	kindPubSub            = "msg"
-	kindObjectStore       = "ost"
-	kindRDB               = "rdb"
-	kindNoSQL             = "doc"
-	kindFunction          = "fun"
-	kindLBA               = "lba"
-	kindCDN               = "cdn"
-	kindDNS               = "dns"
-	kindFirewall          = "waf"
-	kindContainersManager = "kub"
-	kindBlockStore        = "bst"
-	kindCache             = "mem"
-	kindFileStore         = "fst"
-)
-
 // Connection is a link between two components.
 type Connection struct {
 	Origin  string `yaml:"origin"`
 	Targets []struct {
-		ID        string `yaml:"id"`
-		Label     string `yaml:"label,omitempty"`
-		Color     string `yaml:"color,omitempty"`
-		Dashed    bool   `yaml:"dashed,omitempty"`
-		Dir       string `yaml:"dir,omitempty"`
-		Highlight bool   `yaml:"highlight,omitempty"`
+		ID            string  `yaml:"id"`
+		Label         string  `yaml:"label,omitempty"`
+		LabelDistance float32 `yaml:"labeldistance,omitempty"`
+		LabelAngle    float32 `yaml:"labelangle,omitempty"`
+		MinLen        float32 `yaml:"minlen,omitempty"`
+		Num           int     `yaml:"num,omitempty"`
+		Color         string  `yaml:"color,omitempty"`
+		Dashed        bool    `yaml:"dashed,omitempty"`
+		Dir           string  `yaml:"dir,omitempty"`
+		Highlight     bool    `yaml:"highlight,omitempty"`
 	} `yaml:"targets"`
 }
 
@@ -50,9 +34,9 @@ type Component struct {
 	ID        string `yaml:"id,omitempty"`
 	Kind      string `yaml:"kind"`
 	Label     string `yaml:"label,omitempty"`
-	Impl      string `yaml:"impl,omitempty"`
 	Outline   string `yaml:"outline,omitempty"`
-	FillColor string `yaml:"fillColor,omitempty"`
+	Impl      string `yaml:"impl,omitempty"`
+	Provider  string `yaml:"provider,omitempty"`
 	FontColor string `yaml:"fontColor,omitempty"`
 }
 
@@ -100,21 +84,6 @@ func Sketch(cfg Config) (string, error) {
 	return gfx.String(), nil
 }
 
-// fig is a function that render a Component according the Config.
-type fig func(ctx Config, com Component) func(dia *dot.Graph) bool
-
-var (
-	// figRegistry keeps tracks of all 'figure' functions.
-	figRegistry = make(map[string]fig)
-)
-
-// register a 'figure' function to the global registry.
-func register(kind string, fig fig) {
-	if _, ok := figRegistry[kind]; !ok {
-		figRegistry[kind] = fig
-	}
-}
-
 // idAutoGen auto generate a component id.
 func idAutoGen() func(comp *Component) {
 	counters := make(map[string]int16)
@@ -131,11 +100,15 @@ func idAutoGen() func(comp *Component) {
 // sketchComponents draws all components.
 func sketchComponents(gfx *dot.Graph, cfg Config, items []Component) error {
 	genID := idAutoGen()
-	getImpl := guessImplByProvider(cfg.provider)
+	fixKind := validateKind()
+	fixProvider := validateProvider()
 
 	for _, it := range items {
 		genID(&it)
-		getImpl(&it)
+
+		fixKind(&it)
+		fixProvider(&it)
+		setImpl(&it)
 
 		if cfg.verbose {
 			bin, _ := json.Marshal(it)
@@ -143,21 +116,15 @@ func sketchComponents(gfx *dot.Graph, cfg Config, items []Component) error {
 		}
 
 		parent := gfx
-		if strings.TrimSpace(it.Outline) != "" {
+		if box := strings.TrimSpace(it.Outline); len(box) > 0 {
 			parent = cluster.New(gfx, it.Outline,
-				cluster.PenColor("#d9cc31"),
-				cluster.FontName("Fira Mono"),
+				cluster.PenColor("#78959b"),
 				cluster.FontSize(10),
 				cluster.FontColor("#63625b"))
+			parent.Attr("style", "dashed,rounded")
 		}
 
-		if ok := figIcon(cfg, it)(parent); !ok {
-			if fig, found := figRegistry[it.Kind]; found {
-				fig(cfg, it)(parent)
-			} else {
-				return fmt.Errorf("sketcher not found for component of kind <%s>", it.Kind)
-			}
-		}
+		render(cfg, it, parent)
 	}
 
 	return nil
@@ -173,10 +140,13 @@ func sketchConnections(gfx *dot.Graph, ctx Config, items []Connection) error {
 			}
 
 			err := edge.New(gfx, el.Origin, x.ID,
-				edge.Label(x.Label),
+				edge.Label(x.Num, x.Label),
 				edge.Dir(x.Dir),
 				edge.Color(x.Color),
 				edge.Dashed(x.Dashed),
+				edge.LabelDistance(x.LabelDistance),
+				edge.LabelAngle(x.LabelAngle),
+				edge.MinLen(x.MinLen),
 				edge.Highlight(x.Highlight))
 
 			if err != nil {
@@ -199,14 +169,4 @@ func sketchSameRanks(gfx *dot.Graph, ctx Config, items []Rank) {
 			}
 		}
 	}
-}
-
-// fileExists checks if a file exists and is not a directory before we
-// try using it to prevent further errors.
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }

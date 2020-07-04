@@ -3,71 +3,67 @@
 
 Collection of [draft](https://github.com/lucasepe/draft/releases/latest) architecture descriptor YAML files as examples.
 
+## Sample 1 - Message Bus Pattern
 
-## Example 1 - Getting the pre-signed URL to Upload a file to Amazon S3
-
-
-The `draft` architecture descriptor YAML file is here 👉 [./s3-upload-presigned-url.yml](./s3-upload-presigned-url.yml)
+The `draft` architecture descriptor YAML file is here 👉 [message-bus-pattern.yml](./message-bus-pattern.yml)
 
 Running `draft` with this command:
 
 ```bash
-draft s3-upload-presigned-url.yml | dot -Tpng > s3-upload-presigned-url.png
+draft -impl message-bus-pattern.yml | dot -Tpng > message-bus-pattern.png
+```
+
+![](./message-bus-pattern.png)
+
+## Sample 2 - Getting the pre-signed URL to Upload a file to Amazon S3
+
+The `draft` architecture descriptor YAML file is here 👉 [s3-upload-presigned-url.yml](./s3-upload-presigned-url.yml)
+
+Running `draft` with this command:
+
+```bash
+draft -impl s3-upload-presigned-url.yml | dot -Tpng > s3-upload-presigned-url.png
 ```
 
 ![](./s3-upload-presigned-url.png)
 
-Cool... But what if i would like to show AWS product names and icons! ...Here you are!
+## Sample 3 - Amazon Cognito Custom Authentication Flow with external Database
 
-```bash
-DRAFT_ICONS_PATH=../icons
-draft -impl aws s3-upload-presigned-url.yml | dot -Tpng > s3-upload-presigned-url-aws.png
-```
-
-![](./s3-upload-presigned-url-aws.png)
-
-
-## Example 2 - A System View
-
-The `draft` architecture descriptor YAML file is here 👉 [./impl-example.yml](./impl-example.yml)
+The `draft` architecture descriptor YAML file is here 👉 [cognito-custom-auth-flow.yml](./cognito-custom-auth-flow.yml)
 
 Running `draft` with this command:
 
 ```bash
-draft impl-example.yml | dot -Tpng > impl-example.png
+draft -impl cognito-custom-auth-flow.yml | dot -Tpng > cognito-custom-auth-flow.png
 ```
 
-![](./impl-example.png)
+![](./cognito-custom-auth-flow.png)
 
+## Example 4 - A Google Cloud Architecture
 
-Cool... But what if i would like to show AWS product names and icons! ...Here you are!
+The `draft` architecture descriptor YAML file is here 👉 [token-manager-google.yml](./token-manager-google.yml)
+
+Running `draft` with this command:
 
 ```bash
-DRAFT_ICONS_PATH=../icons
-draft -impl aws impl-example.yml | dot -Tpng > impl-example-aws.png
+draft -impl token-manager-google.yml | dot -Tpng > token-manager-google.png
 ```
 
-![](./impl-example-aws.png)
+![](./token-manager-google.png)
 
+## Example 5 - Auth0 Custom Database Connection with Client Credentials
 
-Great... and how it would be in Google cloud! ...Here you are!
+The `draft` architecture descriptor YAML file is here 👉 [auth0-custom-db-connection-with-jwt.yml](./auth0-custom-db-connection-with-jwt.yml)
+
+Running `draft` with this command:
 
 ```bash
-DRAFT_ICONS_PATH=../icons
-draft -impl gcp impl-example.yml | dot -Tpng > impl-example-gcp.png
+draft -impl auth0-custom-db-connection-with-jwt.yml | dot -Tpng > auth0-custom-db-connection-with-jwt.png
 ```
 
-![](./impl-example-gcp.png)
+![](./auth0-custom-db-connection-with-jwt.png)
 
 
-Awesome!... and in Microsoft Azure, I dare you! ...Challange accepted!
-
-```bash
-DRAFT_ICONS_PATH=../icons
-draft -impl azure impl-example.yml | dot -Tpng > impl-example-azure.png
-```
-
-![](./impl-example-azure.png)
 
 ---
 

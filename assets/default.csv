@@ -1,0 +1,19 @@
+bst,Block Store
+cdn,CDN
+cli,CLI App
+dns,DNS
+doc,NoSQL DB
+fst,File Store
+fun,Function
+gtw,Gateway
+kub,Containers Engine
+lba,Load Balancer
+mem,Cache
+msg,Pub/Sub
+ost,Object Store
+que,Queue
+rdb,SQL DB
+ser,μService
+usr,User
+waf,Firewall
+web,Browser

@@ -2,6 +2,7 @@ package edge
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/emicklei/dot"
@@ -10,10 +11,66 @@ import (
 // Attribute is a function that apply a property to an edge.
 type Attribute func(*dot.Edge)
 
-// Label is the text attached to components.
-func Label(label string) Attribute {
+// Label is the edge caption. If 'htm' is true the
+// caption is treated as HTML code.
+func Label(num int, text string) Attribute {
 	return func(el *dot.Edge) {
-		el.Attr("label", label)
+		var render = false
+		var sb strings.Builder
+		sb.WriteString(`<table border="0">`)
+		if num > 0 {
+			render = true
+			sb.WriteString(`<tr><td><font color="#1f6c7c" point-size="9"><b>`)
+			sb.WriteString(strconv.Itoa(num))
+			sb.WriteString("</b></font></td></tr>")
+		}
+
+		if lab := strings.TrimSpace(text); len(lab) > 0 {
+			render = true
+			sb.WriteString("<tr><td>")
+			sb.WriteString(lab)
+			sb.WriteString("</td></tr>")
+		}
+		sb.WriteString("</table>")
+
+		if render {
+			el.Attr("taillabel", dot.HTML(sb.String()))
+		}
+	}
+}
+
+// LabelDistance adjusts the distance that the
+// headlabel(taillabel) is from the head(tail) node.
+func LabelDistance(dist float32) Attribute {
+	return func(el *dot.Edge) {
+
+		el.Attr("labeldistance", fmt.Sprintf("%.2f", dist))
+	}
+}
+
+// LabelAngle along with labeldistance, determine where
+// the headlabel (taillabel) are placed with respect
+// to the head (tail) in polar coordinates.
+// The origin in the coordinate system is the point
+// where the edge touches the node.
+// The ray of 0 degrees goes from the origin back along
+// the edge, parallel to the edge at the origin.
+// The angle, in degrees, specifies the rotation from
+// the 0 degree ray, with positive angles moving counterclockwise
+// and negative angles moving clockwise.
+func LabelAngle(angle float32) Attribute {
+	return func(el *dot.Edge) {
+		el.Attr("labelangle", fmt.Sprintf("%.2f", angle))
+	}
+}
+
+// MinLen sets the minimum edge length (rank difference between head and tail).
+func MinLen(len float32) Attribute {
+	return func(el *dot.Edge) {
+		if len <= 0 {
+			return
+		}
+		el.Attr("minlen", fmt.Sprintf("%.2f", len))
 	}
 }
 

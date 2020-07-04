@@ -7,26 +7,16 @@ import (
 	"testing"
 )
 
-func TestProviderOpt(t *testing.T) {
-	tests := []struct {
-		val  string
-		want string
-	}{
-		{"aws", "aws"},
-		{"gcp", "gcp"},
-		{"cloudflare", ""},
-		{"azure", "azure"},
+func TestShowImplOpt(t *testing.T) {
+
+	cfg := NewConfig(ShowImpl(true))
+	if got := cfg.showImpl; got != true {
+		t.Errorf("got [%v] want [%v]", got, true)
 	}
 
-	cfg := NewConfig()
-
-	for _, tt := range tests {
-		t.Run(tt.want, func(t *testing.T) {
-			Provider(tt.val)(&cfg)
-			if got := cfg.provider; got != tt.want {
-				t.Errorf("got [%v] want [%v]", got, tt.want)
-			}
-		})
+	ShowImpl(false)(&cfg)
+	if got := cfg.showImpl; got != false {
+		t.Errorf("got [%v] want [%v]", got, false)
 	}
 }
 

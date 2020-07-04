@@ -1,0 +1,57 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: gtw
+  - 
+    kind: fun
+  - 
+    kind: fun
+  - 
+    kind: rdb
+  - 
+    kind: ser
+  - 
+    kind: fun
+  - 
+    kind: unk
+  - 
+    kind: unk
+connections:
+   -
+     origin: gtw1
+     targets:
+       -
+         id: fun1
+         num: 1
+         labeldistance: 10
+         minlen: 2
+         label: 'dir: <b>forward</b> (default)'
+   -
+     origin: fun2
+     targets:
+       -
+         id: rdb1
+         dir: both
+         labeldistance: 4
+         num: 2
+         label: 'dir: <b>both</b>'
+   -
+     origin: fun3
+     targets:
+       -
+         id: ser1
+         dir: back
+         labeldistance: 4
+         num: 3
+         label: 'dir: <b>back</b>'
+   -
+     origin: unk1
+     targets:
+       -
+         id: unk2
+         dir: none
+         labeldistance: 4
+         num: 4
+         label: 'dir: <b>none</b>'
+

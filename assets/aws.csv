@@ -1,0 +1,19 @@
+bst,EBS
+cdn,Cloudfront
+cli,CLI App
+dns,Route 53
+doc,DynamoDB
+fst,EFS
+fun,Lambda
+gtw,API Gateway
+kub,EKS
+lba,ELB
+mem,ElastiCache
+msg,SNS
+ost,S3
+que,SQS
+rdb,RDS
+ser,μService
+usr,User
+waf,WAF
+web,Browser

@@ -1,0 +1,28 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: dns
+    outline: Networking
+    label: 'kind: <b>dns</b>'
+  - 
+    kind: cdn
+    outline: Networking
+    label: 'kind: <b>cdn</b>'
+  - 
+    kind: lba
+    outline: Networking
+    label: 'kind: <b>lba</b>'
+connections:
+   -
+     origin: dns1
+     targets:
+       -
+         id: cdn1
+         color: transparent
+   -
+     origin: cdn1
+     targets:
+       -
+         id: lba1
+         color: transparent

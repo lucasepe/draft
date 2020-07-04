@@ -96,12 +96,14 @@ func New(attrs ...Attribute) *dot.Graph {
 	el := dot.NewGraph(dot.Directed)
 	el.Attr("newrank", "true")
 	el.Attr("labelloc", "t")
+	//el.Attr("sep", "+10,10")
+	el.Attr("overlap", "scalexy")
+	el.Attr("nodesep", "0.6")
 
 	FontName("Fira Mono Bold")(el)
 	FontSize(13)(el)
 	LeftToRight()(el)
-	RankSep(1.1)(el)
-	NodeSep(0.4)(el)
+	RankSep(1.2)(el)
 
 	for _, opt := range attrs {
 		opt(el)

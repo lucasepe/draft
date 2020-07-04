@@ -1,30 +1,43 @@
 backgroundColor: '#ffffff'
 components:
   -
-    kind: cli
-    label: "Web App"
-    impl: SPA
+    kind: web
+    label: SPA
   -
     kind: gtw
+    outline: AWS
+    provider: aws
   -
     kind: fun
-    label: "Get\nPre-Signed URL"
+    outline: AWS
+    provider: aws
+    label: |
+      Get 
+      Pre-Signed URL
   -
     kind: ost
-    label: "*.jpg\n*.png"
+    outline: AWS
+    provider: aws
+    label: "*.jpg, *.png"
 connections:
   -
-    origin: cli1
+    origin: web1
     targets:
       -
         id: gtw1
+        num: 1
+        labeldistance: 4.5
   -
     origin: gtw1
     targets:
       -
         id: fun1
+        num: 2
+        labeldistance: 4.5
   -
     origin: fun1
     targets:
       -
         id: ost1
+        num: 3
+        labeldistance: 4.5

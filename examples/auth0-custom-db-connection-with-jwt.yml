@@ -1,0 +1,138 @@
+title: Auth0 custom database login with client credentials
+backgroundColor: '#ffffff'
+components:
+  -
+    kind: web
+  -
+    kind: fun
+    impl: Login Action Script
+    label: login(email, password, callback)
+    outline: Auth0
+  -
+    kind: ser
+    outline: Auth0
+    label: /oauth/token
+  -
+    kind: dns
+    provider: AWS
+    outline: AWS
+  -
+    kind: cdn
+    provider: AWS
+    outline: AWS
+  -
+    kind: gtw
+    provider: AWS
+    outline: AWS
+  -
+    kind: fun
+    label: /login
+    provider: AWS
+    outline: AWS
+  -
+    kind: fun
+    label: verify(access_token)
+    impl: Authorizer
+    provider: AWS
+    outline: AWS
+  -
+    kind: rdb
+    label: Users Repository
+    impl: Oracle DB
+    outline: On Prem
+
+connections:
+  -
+    origin: web1
+    targets:
+      -
+        id: fun1
+        num: 1
+        label: GET /oauth/authorize
+        labeldistance: 8
+        minlen: 2
+        dashed: false
+        color: '#c0c0c0'
+  -
+    origin: fun1
+    targets:
+      -
+        id: ser1
+        num: 2
+        label: POST /oauth/token<br/>clientID<br/>clientSecret
+        labeldistance: 4
+        minlen: 2
+        dashed: false
+        color: '#c0c0c0'
+      -
+        id: dns1
+        num: 3
+        label: POST /login<br/>email<br/>hash(pass)<br/>access_token
+        labeldistance: 10
+        minlen: 2
+        dashed: false
+        color: '#c0c0c0'
+  -
+    origin: dns1
+    targets:
+      -
+        id: cdn1
+        num: 4
+        labeldistance: 2
+        minlen: 1.7
+        dashed: false
+        color: '#c0c0c0'
+  -
+    origin: cdn1
+    targets:
+      -
+        id: gtw1
+        num: 5
+        labeldistance: 6
+        dashed: false
+        color: '#c0c0c0'
+  -
+    origin: gtw1
+    targets:
+      -
+        id: fun2
+        num: 7
+        labeldistance: 6
+        dashed: false
+        color: '#c0c0c0'
+      -
+        id: fun3
+        num: 6
+        labeldistance: 2
+        minlen: 1.7
+        dashed: false
+        color: '#c0c0c0'
+  -
+    origin: fun2
+    targets:
+      -
+        id: rdb1
+        num: 8
+        labeldistance: 5
+        dashed: false
+        color: '#c0c0c0'
+ranks:
+  -
+    name: aaa
+    components:
+      - dns1
+      - cdn1
+  -
+    name: bbb
+    components:
+      - gtw1
+      - fun3
+  -
+    name: ccc
+    components:
+      - fun1
+      - ser1
+
+      
+
+

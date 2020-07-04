@@ -1,0 +1,38 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: gtw
+    outline: Compute
+    label: 'kind: <b>gtw</b>'
+  - 
+    kind: fun
+    outline: Compute
+    label: 'kind: <b>fun</b>'
+  - 
+    kind: kub
+    outline: Compute
+    label: 'kind: <b>kub</b>'
+  - 
+    kind: ser
+    outline: Compute
+    label: 'kind: <b>ser</b>'
+connections:
+   -
+     origin: gtw1
+     targets:
+       -
+         id: fun1
+         color: transparent
+   -
+     origin: fun1
+     targets:
+       -
+         id: kub1
+         color: transparent
+   -
+     origin: kub1
+     targets:
+       -
+         id: ser1
+         color: transparent

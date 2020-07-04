@@ -29,20 +29,6 @@ func BottomTop(enable bool) func(*Config) {
 	}
 }
 
-// Provider sets the cloud implementation (one of 'aws', 'gcp', 'azure')
-func Provider(s string) func(*Config) {
-	provs := map[string]bool{"aws": true, "google": true, "azure": true}
-
-	return func(cfg *Config) {
-		val := strings.ToLower(strings.TrimSpace(s))
-		if provs[val] {
-			cfg.provider = val
-		} else {
-			cfg.provider = ""
-		}
-	}
-}
-
 // URI sets the input YAML definition file.
 // Can be also an HTTP URL.
 func URI(s string) func(*Config) {
@@ -58,15 +44,23 @@ func URI(s string) func(*Config) {
 // IconsPath sets the custom icons path.
 func IconsPath(s string) func(*Config) {
 	return func(cfg *Config) {
-		cfg.iconsPath = strings.TrimSpace(s)
+		cfg.iconsPath, _ = filepath.Abs(strings.TrimSpace(s))
+		os.Mkdir(filepath.Join(cfg.iconsPath, "default"), os.ModePerm)
+	}
+}
+
+// ShowImpl show the cloud provider implementation.
+func ShowImpl(show bool) func(*Config) {
+	return func(cfg *Config) {
+		cfg.showImpl = show
 	}
 }
 
 // Config defines the 'draft' configuration.
 type Config struct {
 	bottomTop bool
-	provider  string
 	verbose   bool
+	showImpl  bool
 	iconsPath string
 	uri       string
 }

@@ -14,10 +14,6 @@ type Attribute func(*dot.Graph)
 func Label(label string) Attribute {
 	return func(el *dot.Graph) {
 		el.Attr("label", label)
-		if strings.TrimSpace(label) != "" {
-			el.Attr("pencolor", "#f5deb3")
-			el.Attr("style", "dashed")
-		}
 	}
 }
 

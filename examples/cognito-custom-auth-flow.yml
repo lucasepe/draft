@@ -2,48 +2,53 @@ title: Amazon Cognito Custom Authentication Flow with external database
 backgroundColor: '#ffffff'
 components:
   -
-    kind: cli
-    label: "Web App"
-    impl: SPA
+    kind: web
+    label: SPA
   -
     kind: cli
-    label: "Mobile App"
-    impl: "Android & iOS"
   -
     kind: ser
-    label: "OAuth 2.0\nAuth Service"
-    provider: AWS
-    impl: "Cognito"
-    fillColor: '#991919'
-    fontColor: '#fafafa'
+    label: |
+      OAuth 2.0
+      Auth Service
+    provider: aws
+    impl: Cognito
   -
     kind: fun
-    label: "Define\nAuthChallange"
-    provider: AWS
-    impl: Lambda
+    label: |
+      Define
+      AuthChallange
+    provider: aws
+    outline: AWS
   -
     kind: fun
-    label: "Create\nAuthChallange"
-    provider: AWS
-    impl: Lambda
+    label: |
+      Create
+      AuthChallange
+    provider: aws
+    outline: AWS
   -
     kind: fun
-    label: "Verify\nAuthChallange"
-    provider: AWS
-    impl: Lambda
+    label: |
+      Verify
+      AuthChallange
+    provider: aws
+    outline: AWS
   -
     kind: rdb
-    label: "Users\nRepository"
-    provider: AWS
-    impl: RDS
+    label: |
+      Users
+      Repository
+    outline: On Prem
+    impl: Oracle DB
 connections:
   -
-    origin: cli1
+    origin: web1
     targets:
       -
         id: ser1
   -
-    origin: cli2
+    origin: cli1
     targets:
       -
         id: ser1
@@ -52,12 +57,20 @@ connections:
     targets:
       -
         id: fun1
+        num: 1
+        labeldistance: 4.5
       -
         id: fun2
+        num: 2
+        labeldistance: 4.5
       -
         id: fun3
+        num: 4
+        labeldistance: 4.5
   -
     origin: fun2
     targets:
       -
         id: rdb1
+        num: 3
+        labeldistance: 4.5

@@ -1,10 +1,9 @@
-title: message bus pattern 
+title: Message Bus Pattern 
 backgroundColor: '#ffffff'
 components:
   - 
     kind: ser
     label: Producer
-    fillColor: '#4e8393'
   -
     kind: msg
     label: |
@@ -12,16 +11,10 @@ components:
       Service
   -
     kind: ser
-    label: |
-      Subscriber
-      @ topic 1
-    fillColor: '#b8422d'
+    label: Subscriber @topic 1
   -
     kind: ser
-    label: |
-      Subscriber
-      @ topic 2
-    fillColor: '#53934e'
+    label: Subscriber @topic 2
 connections:
   -
     origin: ser1

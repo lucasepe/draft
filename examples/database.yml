@@ -1,0 +1,28 @@
+--- 
+backgroundColor: '#ffffff'
+components: 
+  - 
+    kind: rdb
+    outline: Database
+    label: 'kind: <b>rdb</b>'
+  - 
+    kind: doc
+    outline: Database
+    label: 'kind: <b>doc</b>'
+  - 
+    kind: mem
+    outline: Database
+    label: 'kind: <b>mem</b>'
+connections:
+   -
+     origin: rdb1
+     targets:
+       -
+         id: doc1
+         color: transparent
+   -
+     origin: doc1
+     targets:
+       -
+         id: mem1
+         color: transparent

@@ -1,8 +1,21 @@
 package draft
 
+//go:generate statik -p statik -src=./assets
+
 import (
 	"testing"
 )
+
+func TestReadCsvFile(t *testing.T) {
+	dat, err := readCsvFile("/default.csv")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(dat) == 0 {
+		t.Error("len(dat) should not be 0")
+	}
+}
 
 func TestCloudImpl(t *testing.T) {
 	tests := []struct {
@@ -10,17 +23,21 @@ func TestCloudImpl(t *testing.T) {
 		key      string
 		want     string
 	}{
-		{"aws", "bst", "Elastic Block\nStore (EBS)"},
-		{"aws", "lba", "Elastic\nLoad Balancer"},
-		{"aws", "ost", "Simple Storage\nService (S3)"},
+		{"aws", "bst", "EBS"},
+		{"aws", "lba", "ELB"},
+		{"aws", "ost", "S3"},
 
-		{"google", "kub", "Google Kubernetes\nEngine"},
-		{"google", "mem", "Cloud Memorystore"},
-		{"google", "ost", "Cloud Storage"},
+		{"google", "kub", `Kubernetes\nEngine`},
+		{"google", "mem", "Memorystore"},
+		{"google", "ost", "Storage"},
 
-		{"azure", "dns", "Azure DNS"},
+		{"azure", "dns", "DNS"},
 		{"azure", "mem", "Redis Caches"},
-		{"azure", "waf", "Azure Firewall"},
+		{"azure", "waf", "Firewall"},
+
+		{"default", "dns", "DNS"},
+		{"default", "mem", "Cache"},
+		{"default", "waf", "Firewall"},
 	}
 
 	for _, tt := range tests {
@@ -32,56 +49,31 @@ func TestCloudImpl(t *testing.T) {
 	}
 }
 
-func TestGuessImpl(t *testing.T) {
+func TestSetImpl(t *testing.T) {
 	tests := []struct {
-		prov string
-		comp Component
-		want string
+		provider string
+		kind     string
+		want     string
 	}{
-		{
-			"aws", Component{Kind: "bst"},
-			"Elastic Block\nStore (EBS)",
-		},
-		{
-			"aws", Component{Kind: "lba"},
-			"Elastic\nLoad Balancer",
-		},
-		{
-			"aws", Component{Kind: "ost"},
-			"Simple Storage\nService (S3)",
-		},
+		{"aws", "bst", "EBS"},
+		{"aws", "lba", "ELB"},
+		{"aws", "ost", "S3"},
 
-		{
-			"google", Component{Kind: "kub"},
-			"Google Kubernetes\nEngine",
-		},
-		{
-			"google", Component{Kind: "mem"},
-			"Cloud Memorystore",
-		},
-		{
-			"google", Component{Kind: "ost"},
-			"Cloud Storage",
-		},
+		{"google", "kub", `Kubernetes\nEngine`},
+		{"google", "mem", "Memorystore"},
+		{"google", "ost", "Storage"},
 
-		{
-			"azure", Component{Kind: "dns"},
-			"Azure DNS",
-		},
-		{
-			"azure", Component{Kind: "mem"},
-			"Redis Caches",
-		},
-		{
-			"azure", Component{Kind: "waf"},
-			"Azure Firewall",
-		},
+		{"azure", "dns", "DNS"},
+		{"azure", "mem", "Redis Caches"},
+		{"azure", "waf", "Firewall"},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.want, func(t *testing.T) {
-			guessImplByProvider(tt.prov)(&tt.comp)
-			if got := tt.comp.Impl; got != tt.want {
+			com := Component{Provider: tt.provider, Kind: tt.kind}
+			setImpl(&com)
+
+			if got := com.Impl; got != tt.want {
 				t.Errorf("got [%v] want [%v]", got, tt.want)
 			}
 		})
