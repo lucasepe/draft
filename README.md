@@ -1,16 +1,13 @@
 # Draft
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; [![Go Coverage](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft)](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasepe/draft)](https://goreportcard.com/report/github.com/lucasepe/draft) &nbsp;&nbsp;&nbsp; [![Go Coverage](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft)](https://gocover.io/_badge/github.com/lucasepe/draft?nocache=draft) &nbsp;&nbsp;&nbsp; [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flucasepe%2Fdraft) &nbsp;&nbsp;&nbsp; [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/avelino/awesome-go)
 
 A commandline tool that generate **H**igh **L**evel microservice & serverless **A**rchitecture diagrams using a declarative syntax defined in a YAML file.
 
 - Works on [linux, macOS, windows](https://github.com/lucasepe/draft/releases/latest)
 - Just a [single portable binary file](https://github.com/lucasepe/draft/releases/latest)
-- It Does One Thing Well
 - Input data in flat YAML text files
 - Usable with shell scripts
-
-![](./cli-output.png)
 
 
 # Why?
