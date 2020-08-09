@@ -44,8 +44,6 @@ To install GraphViz to your favorite OS, please, follow this link [https://graph
 
 To build the binaries by yourself, assuming that you have `Go` installed, here the steps:
 
-## For Windows 
-
 Clone the repo,
 ```psh
 git clone https://github.com/lucasepe/draft.git
