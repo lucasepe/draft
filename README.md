@@ -40,6 +40,31 @@ Piping the `draft` output to [GraphViz](http://www.graphviz.org/doc/info/output.
 
 To install GraphViz to your favorite OS, please, follow this link [https://graphviz.gitlab.io/download/](https://graphviz.gitlab.io/download/).
 
+# Installation Steps
+
+To build the binaries by yourself, assuming that you have `Go` installed, here the steps:
+
+## For Windows 
+
+Clone the repo,
+```psh
+git clone https://github.com/lucasepe/draft.git
+```
+
+Move to the 'cmd' directory:
+```psh
+cd draft/cmd
+```
+
+Generate the static assets
+```psh
+go generate ../...
+```
+
+Build the binary tool
+```psh
+go build -o draft
+```
 
 # Components
 
