@@ -1,6 +1,6 @@
 package draft
 
-//go:generate statik -p statik -src=./assets
+//go:generate statik -f -p statik -src=./assets
 
 import (
 	"testing"
